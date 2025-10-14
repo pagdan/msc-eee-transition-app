@@ -1,6 +1,6 @@
-# MSc EEE Transition Portal
+# Web Application with Calendar Integration to Support MSc EEE Freshmen Transition at NTU
 
-A comprehensive web application to support MSc Electrical and Electronic Engineering freshmen during their transition at Nanyang Technological University.
+A comprehensive web application with calendar integration to support MSc Electrical and Electronic Engineering freshmen during their transition at Nanyang Technological University.
 
 ## Features
 
