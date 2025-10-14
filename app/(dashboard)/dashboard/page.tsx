@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Calendar, Users, GraduationCap } from "lucide-react";
 import { useEffect, useState } from "react";
+import Footer from "@/components/layout/Footer";
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -67,48 +68,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
-      <footer className="bg-[#181D62] text-white py-8 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <p className="text-sm">
-                © 2025 Nanyang Technological University
-              </p>
-              <p className="text-sm text-white/70">
-                School of Electrical & Electronic Engineering
-              </p>
-            </div>
-            <div className="flex space-x-4">
-              <a
-                href="https://www.facebook.com/ntusg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#D7143F] transition-colors"
-              >
-                Facebook
-              </a>
-              <a
-                href="https://www.instagram.com/ntusg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#D7143F] transition-colors"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://www.linkedin.com/school/ntu-singapore"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#D7143F] transition-colors"
-              >
-                LinkedIn
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

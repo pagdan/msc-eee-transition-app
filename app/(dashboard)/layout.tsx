@@ -23,6 +23,25 @@ const navigation = [
   { name: "Community", href: "/community", icon: Users },
   { name: "Student Life", href: "/student-life", icon: MapPin },
   { name: "Wellbeing", href: "/wellbeing", icon: Heart },
+  {
+    name: "Contact Us",
+    href: "/contact",
+    icon: () => (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+  },
 ];
 
 export default function DashboardLayout({
@@ -65,7 +84,10 @@ export default function DashboardLayout({
             {/* Left: Logos */}
             <div className="flex items-center space-x-4">
               {/* NTU Logo Placeholder */}
-              <div className="flex items-center space-x-2">
+              <Link
+                href="/dashboard"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
                 <div className="w-10 h-10 bg-[#181D62] rounded flex items-center justify-center">
                   <span className="text-white font-bold text-sm">NTU</span>
                 </div>
@@ -73,7 +95,7 @@ export default function DashboardLayout({
                   <div className="text-sm font-bold text-[#181D62]">MSc</div>
                   <div className="text-xs text-[#D7143F]">EEE</div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             {/* Center: Desktop Navigation */}

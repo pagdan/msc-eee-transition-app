@@ -9,6 +9,7 @@ import {
   Filter,
 } from "lucide-react";
 import { format } from "date-fns";
+import Footer from "@/components/layout/Footer";
 
 interface CalendarEvent {
   id: string;
@@ -78,123 +79,128 @@ export default function CalendarPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-[#181D62]">Calendar</h1>
-            <p className="text-gray-600 mt-1">
-              Manage your academic schedule and events
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handleSync}
-              disabled={syncing}
-              className="flex items-center space-x-2 px-4 py-2 bg-[#181D62] text-white rounded-lg hover:bg-[#181D62]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <RefreshCw
-                className={`w-5 h-5 ${syncing ? "animate-spin" : ""}`}
-              />
-              <span>{syncing ? "Syncing..." : "Sync with Outlook"}</span>
-            </button>
-            <button className="flex items-center space-x-2 px-4 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#D7143F]/90 transition-all">
-              <Plus className="w-5 h-5" />
-              <span className="hidden sm:inline">Add Event</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Category Filter */}
-        <div className="bg-[#D9D9D9] rounded-lg p-4">
-          <div className="flex items-center space-x-2 mb-3">
-            <Filter className="w-5 h-5 text-gray-600" />
-            <span className="font-medium text-gray-700">
-              Filter by Category
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
+    <div className="min-h-screen bg-white">
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-[#181D62]">Calendar</h1>
+              <p className="text-gray-600 mt-1">
+                Manage your academic schedule and events
+              </p>
+            </div>
+            <div className="flex gap-2">
               <button
-                key={category.value}
-                onClick={() => setSelectedCategory(category.value)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  selectedCategory === category.value
-                    ? "bg-white text-[#D7143F] shadow-sm"
-                    : "bg-white/50 text-gray-700 hover:bg-white"
-                }`}
+                onClick={handleSync}
+                disabled={syncing}
+                className="flex items-center space-x-2 px-4 py-2 bg-[#181D62] text-white rounded-lg hover:bg-[#181D62]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {category.label}
+                <RefreshCw
+                  className={`w-5 h-5 ${syncing ? "animate-spin" : ""}`}
+                />
+                <span>{syncing ? "Syncing..." : "Sync with Outlook"}</span>
               </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center py-12">
-            <div className="text-center">
-              <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading events...</p>
+              <button className="flex items-center space-x-2 px-4 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#D7143F]/90 transition-all">
+                <Plus className="w-5 h-5" />
+                <span className="hidden sm:inline">Add Event</span>
+              </button>
             </div>
           </div>
-        )}
 
-        {/* Events List */}
-        {!loading && (
-          <div className="space-y-6">
-            {/* Upcoming Events */}
-            {upcomingEvents.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold text-[#181D62] mb-4">
-                  Upcoming Events ({upcomingEvents.length})
-                </h2>
-                <div className="space-y-3">
-                  {upcomingEvents.map((event) => (
-                    <EventCard key={event.id} event={event} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Past Events */}
-            {pastEvents.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-500 mb-4">
-                  Past Events ({pastEvents.length})
-                </h2>
-                <div className="space-y-3 opacity-60">
-                  {pastEvents.map((event) => (
-                    <EventCard key={event.id} event={event} isPast />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Empty State */}
-            {filteredEvents.length === 0 && (
-              <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
-                <CalendarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No events found
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {selectedCategory === "all"
-                    ? "Get started by syncing with Outlook or adding a custom event"
-                    : "No events in this category"}
-                </p>
+          {/* Category Filter */}
+          <div className="bg-[#D9D9D9] rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-3">
+              <Filter className="w-5 h-5 text-gray-600" />
+              <span className="font-medium text-gray-700">
+                Filter by Category
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
                 <button
-                  onClick={handleSync}
-                  className="px-6 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#D7143F]/90 transition-colors"
+                  key={category.value}
+                  onClick={() => setSelectedCategory(category.value)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    selectedCategory === category.value
+                      ? "bg-white text-[#D7143F] shadow-sm"
+                      : "bg-white/50 text-gray-700 hover:bg-white"
+                  }`}
                 >
-                  Sync with Outlook
+                  {category.label}
                 </button>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
-        )}
+
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center py-12">
+              <div className="text-center">
+                <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading events...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Events List */}
+          {!loading && (
+            <div className="space-y-6">
+              {/* Upcoming Events */}
+              {upcomingEvents.length > 0 && (
+                <div>
+                  <h2 className="text-xl font-semibold text-[#181D62] mb-4">
+                    Upcoming Events ({upcomingEvents.length})
+                  </h2>
+                  <div className="space-y-3">
+                    {upcomingEvents.map((event) => (
+                      <EventCard key={event.id} event={event} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Past Events */}
+              {pastEvents.length > 0 && (
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-500 mb-4">
+                    Past Events ({pastEvents.length})
+                  </h2>
+                  <div className="space-y-3 opacity-60">
+                    {pastEvents.map((event) => (
+                      <EventCard key={event.id} event={event} isPast />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {filteredEvents.length === 0 && (
+                <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
+                  <CalendarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No events found
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    {selectedCategory === "all"
+                      ? "Get started by syncing with Outlook or adding a custom event"
+                      : "No events in this category"}
+                  </p>
+                  <button
+                    onClick={handleSync}
+                    className="px-6 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#D7143F]/90 transition-colors"
+                  >
+                    Sync with Outlook
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

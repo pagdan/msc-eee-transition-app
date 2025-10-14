@@ -1,7 +1,32 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Calendar, Users, MapPin, Heart } from "lucide-react";
+import { useEffect } from "react";
 
 export default function HomePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to dashboard if logged in
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
+
+  // Show loading while checking auth
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Show landing page for non-authenticated users
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Header */}
@@ -42,25 +67,25 @@ export default function HomePage() {
             icon={<Calendar className="w-8 h-8 text-blue-600" />}
             title="Calendar"
             description="Sync your academic timetable and never miss important events with Microsoft Outlook integration"
-            href="/calendar"
+            href="/login"
           />
           <FeatureCard
             icon={<Users className="w-8 h-8 text-green-600" />}
             title="Community"
             description="Join clubs, participate in forums, and connect with fellow MSc EEE students"
-            href="/community"
+            href="/login"
           />
           <FeatureCard
             icon={<MapPin className="w-8 h-8 text-orange-600" />}
             title="Student Life"
             description="Discover dining spots, campus bus routes, and the best study locations"
-            href="/student-life"
+            href="/login"
           />
           <FeatureCard
             icon={<Heart className="w-8 h-8 text-red-600" />}
             title="Wellbeing"
             description="Access mental health resources, counseling services, and wellness programs"
-            href="/wellbeing"
+            href="/login"
           />
         </div>
 
