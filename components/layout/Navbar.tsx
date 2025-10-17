@@ -74,7 +74,7 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
               {/* MSc EEE Logo */}
               <div className="hidden sm:block">
                 <div className="text-sm font-bold text-[#181D62]">MSc</div>
-                <div className="text-xs text-[#D7143F]">EEE</div>
+                <div className="text-sm font-bold text-[#D7143F]">EEE</div>
               </div>
             </div>
           </Link>
@@ -92,7 +92,7 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
                     isActive
                       ? "bg-white text-[#D7143F]"
-                      : "text-gray-700 hover:bg-white/50"
+                      : "text-[#181D62] hover:bg-white/50"
                   }`}
                 >
                   <IconComponent className="w-5 h-5" />
@@ -105,7 +105,7 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
           {/* Right: Search & Profile */}
           <div className="flex items-center space-x-3">
             {/* Search */}
-            <button className="hidden sm:flex items-center space-x-2 px-3 py-2 bg-white/50 hover:bg-white rounded-lg transition-colors">
+            <button className="hidden sm:flex items-center space-x-2 px-3 py-2 hover:bg-white rounded-lg transition-colors">
               <Search className="w-5 h-5 text-gray-600" />
             </button>
 
@@ -113,7 +113,7 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
             <div className="relative">
               <button
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center space-x-2 px-3 py-2 bg-white/50 hover:bg-white rounded-lg transition-colors"
+                className="flex items-center space-x-2 px-3 py-2 hover:bg-white rounded-lg transition-colors"
               >
                 <div className="w-8 h-8 bg-[#181D62] rounded-full flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
