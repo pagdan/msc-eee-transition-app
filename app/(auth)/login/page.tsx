@@ -10,7 +10,7 @@ export default function LoginPage() {
   const handleMicrosoftSignIn = async () => {
     setIsLoading(true);
     try {
-      await signIn("azure-ad", { callbackUrl: "/calendar" });
+      await signIn("azure-ad", { callbackUrl: "/dashboard" });
     } catch (error) {
       console.error("Sign in error:", error);
       setIsLoading(false);
@@ -23,7 +23,7 @@ export default function LoginPage() {
       await signIn("credentials", {
         email: "demo@e.ntu.edu.sg",
         password: "demo123",
-        callbackUrl: "/calendar",
+        callbackUrl: "/dashboard",
       });
     } catch (error) {
       console.error("Demo sign in error:", error);

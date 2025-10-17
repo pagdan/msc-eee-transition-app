@@ -95,6 +95,23 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    // Redirect callback to ensure users go to dashboard
+    async redirect({ url, baseUrl }) {
+      // If the url is just the base URL, redirect to dashboard
+      if (url === baseUrl) {
+        return `${baseUrl}/dashboard`;
+      }
+      // If it's a relative URL starting with "/", use it
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      // If it's the same domain, allow it
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      // Otherwise, redirect to dashboard
+      return `${baseUrl}/dashboard`;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
