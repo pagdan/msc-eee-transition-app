@@ -9,6 +9,8 @@ import {
   Mail,
   ChevronLeft,
   ChevronRight,
+  Calendar as CalendarIcon,
+  Plus,
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -66,13 +68,39 @@ const resources = [
   },
 ];
 
+interface Event {
+  id: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  imageUrl?: string;
+}
+
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loadingEvents, setLoadingEvents] = useState(true);
   const swiperRef = useRef<SwiperType>();
 
   useEffect(() => {
     setIsVisible(true);
+    fetchEvents();
   }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setLoadingEvents(true);
+      const response = await fetch("/api/events?limit=12");
+      const data = await response.json();
+      if (data.success) {
+        setEvents(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setLoadingEvents(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -100,6 +128,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       {/* Resources Section with Carousel */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -163,8 +192,38 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Upcoming Events Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-[#181D62] mb-2">
+                Upcoming Events
+              </h2>
+              <p className="text-gray-600">
+                Stay connected with the latest happenings in the MSc EEE
+                community
+              </p>
+            </div>
+          </div>
+
+          {loadingEvents ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Footer */}
       <Footer />
+
       <style jsx global>{`
         .resources-swiper {
           width: 100%;
@@ -240,5 +299,71 @@ function ResourceCard({
         </div>
       </div>
     </Link>
+  );
+}
+
+function EventCard({ event }: { event: Event }) {
+  const handleAddToCalendar = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    // TODO: Implement add to calendar functionality
+    alert("Add to calendar functionality will be implemented");
+  };
+
+  return (
+    <div className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
+      {/* Event Image */}
+      <div className="relative h-48 bg-gradient-to-br from-[#D7143F] to-[#181D62] overflow-hidden">
+        {event.imageUrl ? (
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <CalendarIcon className="w-16 h-16 text-white opacity-50" />
+          </div>
+        )}
+        {/* Date Badge */}
+        <div className="absolute top-4 left-4 bg-white rounded-lg px-3 py-2 shadow-lg">
+          <div className="text-[#D7143F] font-bold text-lg">
+            {new Date(event.date).getDate()}
+          </div>
+          <div className="text-gray-600 text-xs font-medium">
+            {new Date(event.date).toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Event Content */}
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-bold text-lg text-[#181D62] mb-2 line-clamp-2 group-hover:text-[#D7143F] transition-colors">
+          {event.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+          {event.subtitle}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2 mt-auto">
+          <Link
+            href={`/events/${event.id}`}
+            className="flex-1 px-4 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#B01030] transition-colors text-center text-sm font-medium"
+          >
+            Learn More
+          </Link>
+          <button
+            onClick={handleAddToCalendar}
+            className="px-4 py-2 bg-[#D9D9D9] text-[#181D62] rounded-lg hover:bg-[#181D62] hover:text-white transition-colors"
+            aria-label="Add to calendar"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

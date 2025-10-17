@@ -95,22 +95,29 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    // Redirect callback to ensure users go to dashboard
+    // ✅ Fixed redirect callback
     async redirect({ url, baseUrl }) {
-      // If the url is just the base URL, redirect to dashboard
-      if (url === baseUrl) {
-        return `${baseUrl}/dashboard`;
-      }
-      // If it's a relative URL starting with "/", use it
+      // Always use relative paths to work with any domain/IP
+      // If the url is a relative path, use it directly
       if (url.startsWith("/")) {
-        return `${baseUrl}${url}`;
-      }
-      // If it's the same domain, allow it
-      if (new URL(url).origin === baseUrl) {
         return url;
       }
-      // Otherwise, redirect to dashboard
-      return `${baseUrl}/dashboard`;
+
+      // If it's an absolute URL on the same origin, extract the path
+      try {
+        const urlObj = new URL(url);
+        const baseUrlObj = new URL(baseUrl);
+
+        // If same origin, return the path
+        if (urlObj.origin === baseUrlObj.origin) {
+          return urlObj.pathname;
+        }
+      } catch (e) {
+        // If URL parsing fails, default to dashboard
+      }
+
+      // Default: redirect to dashboard (relative path)
+      return "/dashboard";
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

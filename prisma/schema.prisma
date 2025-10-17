@@ -231,3 +231,18 @@ model WellbeingLog {
 
   @@map("wellbeing_logs")
 }
+
+// Events (for dashboard upcoming events section)
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String   @db.Text
+  date        DateTime
+  imageUrl    String?
+  content     String?  @db.Text // Full event description for detail page
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("events")
+}
