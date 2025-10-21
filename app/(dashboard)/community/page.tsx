@@ -11,6 +11,10 @@ import {
   ChevronRight,
   Calendar as CalendarIcon,
   Plus,
+  Group,
+  HandIcon,
+  MessageCircle,
+  Instagram,
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -27,44 +31,28 @@ import Footer from "@/components/layout/Footer";
 
 const resources = [
   {
-    icon: <Calendar className="w-16 h-16 text-white" />,
-    title: "Calendar",
+    icon: <HandIcon className="w-16 h-16 text-white" />,
+    title: "Clubs",
     description:
-      "Manage your academic schedule and sync with Outlook calendar. Never miss an important deadline or event.",
-    href: "/calendar",
+      "Explore clubs, join events, and connect with fellow MSc EEE students. Build your network.",
+    href: "/community/clubs",
     gradient: "from-[#D7143F] to-[#B01030]",
   },
   {
-    icon: <Users className="w-16 h-16 text-white" />,
-    title: "Community",
+    icon: <MessageCircle className="w-16 h-16 text-white" />,
+    title: "Forum",
     description:
-      "Join clubs, participate in forums, and connect with fellow MSc EEE students. Build your network.",
-    href: "/community",
+      "Chat with fellow MSc EEE students, ask questions, and share your experiences.",
+    href: "/community/forum",
     gradient: "from-[#181D62] to-[#0F1142]",
   },
   {
-    icon: <GraduationCap className="w-16 h-16 text-white" />,
-    title: "Student Life",
+    icon: <Instagram className="w-16 h-16 text-white" />,
+    title: "Social Media",
     description:
-      "Discover dining spots, campus bus routes, and the best study locations. Navigate campus with ease.",
-    href: "/student-life",
+      "Come join our social media community and connect with fellow MSc EEE students. Share your experiences, ask questions, and stay up-to-date with the latest news and events.",
+    href: "/community/social",
     gradient: "from-purple-600 to-purple-800",
-  },
-  {
-    icon: <Heart className="w-16 h-16 text-white" />,
-    title: "Wellbeing",
-    description:
-      "Access mental health resources, counseling services, and wellness programs. Take care of yourself.",
-    href: "/wellbeing",
-    gradient: "from-pink-600 to-pink-800",
-  },
-  {
-    icon: <Mail className="w-16 h-16 text-white" />,
-    title: "Contact Us",
-    description:
-      "Get in touch with support, administration, and faculty. We're here to help you succeed.",
-    href: "/contact",
-    gradient: "from-green-600 to-green-800",
   },
 ];
 
@@ -114,17 +102,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              Welcome MSc EEE Freshmen!
+              Welcome to the
+            </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+              MSc EEE Community!
             </h1>
             <p className="text-xl text-white/90 mb-8">
-              Your journey at Nanyang Technological University starts here!
+              Hang out with your fellow students, share ideas, and collaborate
+              on projects.
             </p>
-            <Link
-              href="/calendar"
-              className="inline-block bg-white text-[#D7143F] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
-            >
-              Get Started
-            </Link>
           </div>
         </div>
       </section>
@@ -136,8 +122,9 @@ export default function HomePage() {
             Resources
           </h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Explore the tools and services designed to support your academic
-            journey
+            Explore the MSC EEE community resources designed to support your
+            academic journey. From study materials to networking opportunities,
+            we have everything you need to succeed.
           </p>
 
           {/* Carousel Container */}
@@ -189,35 +176,6 @@ export default function HomePage() {
               <ChevronRight className="w-7 h-7" />
             </button>
           </div>
-        </div>
-      </section>
-
-      {/* Upcoming Events Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-[#181D62] mb-2">
-                Upcoming Events
-              </h2>
-              <p className="text-gray-600">
-                Stay connected with the latest happenings in the MSc EEE
-                community
-              </p>
-            </div>
-          </div>
-
-          {loadingEvents ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {events.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
