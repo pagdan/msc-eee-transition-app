@@ -258,6 +258,7 @@ async function main() {
   console.log(`✅ Created ${resources.length} wellbeing resources`);
 
   // Create sample events
+  // Create sample events
   const events = await Promise.all([
     prisma.event.create({
       data: {
@@ -265,6 +266,7 @@ async function main() {
         subtitle:
           "EEE MSc students gathered at the Lee Kong Chian Function Room for a heartwarming Mid-Autumn Festival celebration for a wonderful afternoon filled with culture, creativity, and connection.",
         date: new Date("2025-10-07"),
+        imageUrl: "/images/events/mid-autumn-festival.jpg",
         content:
           "Join us for a memorable Mid-Autumn Festival celebration! EEE MSc students will gather at the Lee Kong Chian Function Room for an afternoon filled with traditional games, lantern displays, and mooncake sharing. This is a wonderful opportunity to connect with fellow students while experiencing the rich cultural heritage of this important festival.",
       },
@@ -275,6 +277,7 @@ async function main() {
         subtitle:
           "From deep tech talks to networking with industry pioneers, NTU MSc students experienced how Singapore's top network professionals are shaping the future of Internet and communications technology.",
         date: new Date("2025-09-26"),
+        imageUrl: "/images/events/sgnog12.jpg",
         content:
           "SGNOG12 brought together Singapore's leading network operators and technology professionals. Students had the opportunity to attend technical presentations, participate in hands-on workshops, and network with industry experts shaping the future of internet infrastructure.",
       },
@@ -285,6 +288,7 @@ async function main() {
         subtitle:
           "EEE MSc students embarked on a cultural journey through Singapore's rich multicultural history, discovering how Southeast Asian, South Asian, and Islamic traditions have shaped the nation's vibrant identity.",
         date: new Date("2025-09-26"),
+        imageUrl: "/images/events/multiculture-walk.jpg",
         content:
           "Explore Singapore's diverse cultural heritage through a guided walking tour. Visit historic neighborhoods, temples, and cultural landmarks while learning about the traditions and customs that make Singapore a unique multicultural nation.",
       },
@@ -295,6 +299,7 @@ async function main() {
         subtitle:
           "Participants enjoyed a refreshing weekend hike through lush greenery and scenic rest stops, connecting with nature and one another along the Mandai Boardwalk.",
         date: new Date("2025-09-15"),
+        imageUrl: "/images/events/mandai-boardwalk.jpg",
         content:
           "Take a break from studies and immerse yourself in nature! The Mandai Boardwalk offers a peaceful escape with its scenic trails, lush tropical vegetation, and beautiful rest areas. Perfect for relaxation and making new friends.",
       },
@@ -305,6 +310,7 @@ async function main() {
         subtitle:
           "We had an inspiring session with NTU alumnus and Singapore Institute of Technology's Associate Professor Dr Hua Guang.",
         date: new Date("2025-08-29"),
+        imageUrl: "/images/events/alumni-career-sharing.jpg",
         content:
           "Learn from successful alumni about pursuing a research career in engineering. Dr Hua Guang shares insights on academic research, publishing, grant applications, and transitioning from industry to academia.",
       },
@@ -315,6 +321,7 @@ async function main() {
         subtitle:
           "We rolled out the red carpet for our newest cohort of Master of Science graduate students at #NTUEEE!",
         date: new Date("2025-08-06"),
+        imageUrl: "/images/events/orientation-day.jpg",
         content:
           "Welcome to NTU! Join us for orientation day where you'll meet your cohort, learn about campus facilities, understand your programme structure, and get all the information you need to start your MSc journey successfully.",
       },
@@ -325,6 +332,7 @@ async function main() {
         subtitle:
           "We warmly welcomed our new EEE MSc students at the airport with a complimentary pickup service, ensuring a smooth arrival and a swift start to their journey at NTU.",
         date: new Date("2025-07-30"),
+        imageUrl: "/images/events/airport-pickup.jpg",
         content:
           "New international students arriving for the August intake can enjoy complimentary airport pickup services. Our team will meet you at the airport and help you get settled into your accommodation.",
       },
@@ -335,6 +343,7 @@ async function main() {
         subtitle:
           "The EEE Lifelong Learning Club hosted its highly anticipated Weekend Music Festival at the AIA Canopy, North Spine.",
         date: new Date("2025-04-05"),
+        imageUrl: "/images/events/music-festival.jpg",
         content:
           "Enjoy live music performances from talented student bands and local artists. The festival features multiple genres, food stalls, and a relaxed atmosphere perfect for unwinding after exams.",
       },
@@ -345,6 +354,7 @@ async function main() {
         subtitle:
           "The EEE English Corner (E4C) is an engaging initiative that offers a relaxed space for participants to practice spoken English and improve their communication skills.",
         date: new Date("2025-03-14"),
+        imageUrl: "/images/events/english-corner.jpg",
         content:
           "Practice your English in a friendly, supportive environment. English Corner sessions include group discussions, presentations, and language games designed to build confidence and fluency.",
       },
@@ -356,6 +366,7 @@ async function main() {
         subtitle:
           "The MSc Graduation Dinner is an annual celebration recognising the achievements of graduating Master of Science students.",
         date: new Date("2025-05-09"),
+        imageUrl: "/images/events/graduation-dinner.jpg",
         content:
           "Celebrate your achievements with fellow graduates, faculty, and family at our annual graduation dinner. Enjoy a formal dinner, speeches, awards ceremony, and entertainment as we mark this significant milestone.",
       },
@@ -366,6 +377,7 @@ async function main() {
         subtitle:
           "Organised by the Lifelong Learning Club and SGNOG, the workshop provided students insights on resume building, interview preparation, and networking.",
         date: new Date("2025-02-21"),
+        imageUrl: "/images/events/cme-workshop.jpg",
         content:
           "Prepare for your career with practical workshops on resume writing, interview techniques, and professional networking. Industry professionals share their insights and review your application materials.",
       },
@@ -376,6 +388,7 @@ async function main() {
         subtitle:
           "Morris Liwen Xu, EEE MSC alumnus, now a Data Scientist at DBS Bank Ltd, returned to share his career journey and offer valuable advice during a session with juniors.",
         date: new Date("2025-02-21"),
+        imageUrl: "/images/events/alumni-sharing-morris.jpg",
         content:
           "Hear firsthand from a successful alumnus about transitioning from MSc to industry. Morris shares his journey to becoming a Data Scientist at DBS Bank, including tips on job hunting, skill development, and career growth.",
       },

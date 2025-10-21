@@ -131,6 +131,28 @@ npx prisma migrate reset
 npx prisma migrate dev --name migration_name
 ```
 
+### 7. Useful Commands
+
+```bash
+# Run Prisma Studio (database GUI)
+npx prisma studio
+
+# Generate Prisma client after schema changes
+npx prisma generate
+
+# Run migrations
+npx prisma migrate dev
+
+# Run seed
+npx prisma db seed
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
 ## Project Structure
 
 ```
