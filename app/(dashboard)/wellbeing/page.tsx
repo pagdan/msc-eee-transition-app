@@ -105,11 +105,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              Welcome to the Student Life of MSc EEE Freshmen!
-            </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4">Wellbeing</h1>
             <p className="text-xl text-white/90 mb-8">
-              Your all-around guide to living in NTU!
+              Wellbeing is a crucial aspect of your academic journey at NTU.
             </p>
             <Link
               href="/calendar"

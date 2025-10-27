@@ -1,4 +1,4 @@
-// app/student-life/bus-routes/page.tsx
-export default function BusRoutesPage() {
-  return <div>Bus Routes Page - Coming Soon!</div>;
+// app/wellbeing/emotional/page.tsx
+export default function EmotionalPage() {
+  return <div>Emotional Page - Coming Soon!</div>;
 }

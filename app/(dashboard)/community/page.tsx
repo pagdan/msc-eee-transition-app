@@ -101,12 +101,7 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              Welcome to the
-            </h1>
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              MSc EEE Community!
-            </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4">Community</h1>
             <p className="text-xl text-white/90 mb-8">
               Hang out with your fellow students, share ideas, and collaborate
               on projects.
