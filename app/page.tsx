@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Calendar, Users, MapPin, Heart } from "lucide-react";
 import { useEffect } from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -29,23 +31,36 @@ export default function HomePage() {
   // Show landing page for non-authenticated users
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">NTU</span>
-            </div>
-            <h1 className="text-xl font-bold text-gray-900">
-              MSc EEE Transition Portal
-            </h1>
+      {/* Header - Simple version for non-authenticated users */}
+      <header className="bg-[#D9D9D9] shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex items-center space-x-4 hover:opacity-80 transition-opacity"
+            >
+              <div className="flex items-center space-x-2">
+                {/* NTU Logo */}
+                <div className="w-10 h-10 bg-[#181D62] rounded flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">NTU</span>
+                </div>
+                {/* MSc EEE Logo */}
+                <div className="hidden sm:block">
+                  <div className="text-sm font-bold text-[#181D62]">MSc</div>
+                  <div className="text-sm font-bold text-[#D7143F]">EEE</div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Sign In Button */}
+            <Link
+              href="/login"
+              className="px-4 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#B81136] transition-colors font-medium"
+            >
+              Sign In
+            </Link>
           </div>
-          <Link
-            href="/login"
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Sign In
-          </Link>
         </div>
       </header>
 
@@ -90,17 +105,17 @@ export default function HomePage() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-blue-600 rounded-2xl p-8 text-center text-white">
+        <div className="bg-[#181D62] rounded-2xl p-8 text-center text-white">
           <h3 className="text-2xl font-bold mb-4">
             Ready to Start Your Journey?
           </h3>
-          <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+          <p className="text-white/80 mb-6 max-w-2xl mx-auto">
             Sign in with your NTU account to access personalized features and
             connect with your cohort
           </p>
           <Link
             href="/login"
-            className="inline-block px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+            className="inline-block px-8 py-3 bg-[#D7143F] text-white font-semibold rounded-lg hover:bg-[#B81136] transition-colors"
           >
             Get Started
           </Link>
@@ -108,14 +123,7 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-50 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-600">
-          <p>
-            &copy; 2025 MSc EEE Transition Portal. Nanyang Technological
-            University.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
@@ -138,7 +146,7 @@ function FeatureCard({
       <p className="text-gray-600 mb-4">{description}</p>
       <Link
         href={href}
-        className="text-blue-600 font-medium hover:text-blue-700 transition-colors"
+        className="text-[#D7143F] font-medium hover:text-[#B81136] transition-colors"
       >
         Learn more →
       </Link>
