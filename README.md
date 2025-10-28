@@ -4,10 +4,10 @@ A comprehensive web application with calendar integration to support MSc Electri
 
 ## Features
 
-- **📅 Calendar Integration**: Sync with Microsoft Outlook for academic timetables and events
-- **👥 Community**: Join clubs, participate in forums, and connect with peers
-- **📍 Student Life**: Campus resources, dining options, and study spots
-- **❤️ Wellbeing**: Mental health resources and wellness tracking
+- **Calendar Integration**: Sync with Microsoft Outlook for academic timetables and events
+- **Community**: Join clubs, participate in forums, and connect with peers
+- **Student Life**: Campus resources, dining options, and study spots
+- **Wellbeing**: Mental health resources and wellness tracking
 
 ## Tech Stack
 
@@ -90,7 +90,7 @@ NEXT_PUBLIC_APP_NAME="MSc EEE Transition Portal"
 openssl rand -base64 32
 ```
 
-### 4. Set Up Microsoft Azure AD
+### 4. Set Up Microsoft Azure AD (using demo login instead, ignore for now)
 
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Navigate to Azure Active Directory > App registrations
@@ -201,6 +201,12 @@ msc-eee-transition-app/
 - Counseling services information
 - Wellness tracking (mood logs)
 
+### Contact Us
+
+- Contacts: Email & Phone Numbers
+- Office Hours
+- Contact Us Form
+
 ## Development Tips
 
 1. **Database Changes**: Always run `npx prisma migrate dev` after modifying `schema.prisma`
@@ -231,7 +237,7 @@ Update these environment variables in production:
 
 ## Contributing
 
-This is a Final Year Project for NTU. For questions or suggestions, please contact the project team.
+This is a Final Year Project for NTU. For questions or suggestions, please email me here: pagd0001@e.ntu.edu.sg
 
 ## License
 
