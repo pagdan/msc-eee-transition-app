@@ -25,7 +25,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   calendarEvents CalendarEvent[]
-  clubMemberships ClubMembership[]
   forumPosts    ForumPost[]
   forumComments ForumComment[]
   wellbeingLogs WellbeingLog[]
@@ -85,37 +84,22 @@ model CalendarEvent {
   @@map("calendar_events")
 }
 
-// Clubs
+// Club
 model Club {
   id          String   @id @default(cuid())
   name        String
+  slug        String   @unique
   description String   @db.Text
-  category    String   // "academic", "sports", "cultural", "social"
+  category    String   // "Academic", "Social", "Technical", "Professional"
   imageUrl    String?
-  meetingSchedule String?
+  memberCount Int      @default(0)
   contactEmail String?
+  website     String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  members     ClubMembership[]
-
   @@map("clubs")
-}
-
-// Club Memberships
-model ClubMembership {
-  id        String   @id @default(cuid())
-  userId    String
-  clubId    String
-  role      String   @default("member") // "member", "admin", "president"
-  joinedAt  DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  club Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, clubId])
-  @@map("club_memberships")
 }
 
 // Forum Posts

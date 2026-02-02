@@ -13,53 +13,126 @@ async function main() {
   await prisma.diningLocation.deleteMany();
   await prisma.forumComment.deleteMany();
   await prisma.forumPost.deleteMany();
-  await prisma.clubMembership.deleteMany();
   await prisma.club.deleteMany();
   await prisma.calendarEvent.deleteMany();
   await prisma.event.deleteMany();
 
   console.log("✅ Cleared existing data");
 
-  // Create sample clubs
+  // Seed Clubs
+  console.log("🏛️ Seeding clubs...");
+
   const clubs = await Promise.all([
     prisma.club.create({
       data: {
-        name: "EEE Research Society",
+        name: "EEE Club",
+        slug: "eee-club",
         description:
-          "Join us to explore cutting-edge research in electrical and electronic engineering. We host regular seminars, workshops, and networking events with industry professionals.",
-        category: "academic",
-        meetingSchedule: "Every Friday, 6:00 PM - 8:00 PM",
-        contactEmail: "eee.research@ntu.edu.sg",
+          "The official student club for all EEE students at NTU. We organize academic events, networking sessions, and social gatherings to foster a strong community among electrical and electronic engineering students. Join us for regular meetups, industry talks, and peer support throughout your master's journey.",
+        category: "Academic",
+        memberCount: 245,
+        contactEmail: "eeeclub@ntu.edu.sg",
+        imageUrl: "/images/clubs/eee-club.jpg",
       },
     }),
     prisma.club.create({
       data: {
-        name: "Badminton Club",
+        name: "EEE LEAD",
+        slug: "eee-lead",
         description:
-          "Play badminton with fellow students. All skill levels welcome! We have regular training sessions and friendly matches.",
-        category: "sports",
-        meetingSchedule: "Tuesday & Thursday, 7:00 PM - 9:00 PM",
-        contactEmail: "badminton@ntu.edu.sg",
+          "EEE Leadership and Development Club focuses on developing leadership skills, professional competencies, and career readiness among EEE students. We conduct workshops on public speaking, project management, and teamwork. Perfect for students looking to enhance their soft skills and prepare for leadership roles.",
+        category: "Professional",
+        memberCount: 128,
+        contactEmail: "eeelead@ntu.edu.sg",
+        imageUrl: "/images/clubs/eee-lead.jpg",
       },
     }),
     prisma.club.create({
       data: {
-        name: "Cultural Dance Ensemble",
+        name: "EEE Outreach",
+        slug: "eee-outreach",
         description:
-          "Experience diverse cultures through dance. We perform at university events and organize cultural showcases throughout the year.",
-        category: "cultural",
-        meetingSchedule: "Wednesday, 6:00 PM - 8:00 PM",
-        contactEmail: "dance@ntu.edu.sg",
+          "Dedicated to community service and STEM education outreach. We organize tutoring programs for underprivileged students, science demonstrations at local schools, and technology workshops for the community. Make a difference while developing your communication and teaching skills.",
+        category: "Social",
+        memberCount: 87,
+        contactEmail: "eeeoutreach@ntu.edu.sg",
+        imageUrl: "/images/clubs/eee-outreach.jpg",
       },
     }),
     prisma.club.create({
       data: {
-        name: "Student Volunteer Corps",
+        name: "dEEEvelopers",
+        slug: "deevelopers",
         description:
-          "Make a difference in the community through volunteering. Join us for meaningful social impact projects.",
-        category: "social",
-        meetingSchedule: "Saturdays, 9:00 AM - 12:00 PM",
-        contactEmail: "volunteer@ntu.edu.sg",
+          "A coding and software development club for EEE students passionate about programming. We run hackathons, coding challenges, and collaborative projects. Whether you're interested in embedded systems, web development, or mobile apps, join us to code together and learn from peers.",
+        category: "Technical",
+        memberCount: 156,
+        contactEmail: "deevelopers@ntu.edu.sg",
+        website: "https://deevelopers.club",
+        imageUrl: "/images/clubs/deevelopers.jpg",
+      },
+    }),
+    prisma.club.create({
+      data: {
+        name: "Garage@EEE",
+        slug: "garage-eee",
+        description:
+          "An innovation and maker space community where creativity meets engineering. Build prototypes, work on hardware projects, and access tools like 3D printers, soldering stations, and electronics kits. From robotics to IoT projects, bring your ideas to life in our collaborative workspace.",
+        category: "Technical",
+        memberCount: 93,
+        contactEmail: "garage@ntu.edu.sg",
+        website: "https://garage.eee.ntu.edu.sg",
+        imageUrl: "/images/clubs/garage-eee.jpg",
+      },
+    }),
+    prisma.club.create({
+      data: {
+        name: "Marvel Club@EEE",
+        slug: "marvel-club-eee",
+        description:
+          "Microwave and Antennas Research and eValuation Lab Club brings together students interested in RF engineering, wireless communications, and electromagnetic theory. Participate in research projects, antenna design competitions, and technical seminars with industry experts in wireless technology.",
+        category: "Academic",
+        memberCount: 64,
+        contactEmail: "marvel@ntu.edu.sg",
+        imageUrl: "/images/clubs/marvel-club.jpg",
+      },
+    }),
+    prisma.club.create({
+      data: {
+        name: "MLDA@EEE",
+        slug: "mlda-eee",
+        description:
+          "Machine Learning and Data Analytics Club explores the intersection of AI, machine learning, and electrical engineering. Join study groups on neural networks, computer vision, and data science. Perfect for students interested in applying ML to signal processing, power systems, and automation.",
+        category: "Technical",
+        memberCount: 203,
+        contactEmail: "mlda@ntu.edu.sg",
+        website: "https://mlda.eee.ntu.edu.sg",
+        imageUrl: "/images/clubs/mlda-eee.jpg",
+      },
+    }),
+    prisma.club.create({
+      data: {
+        name: "NTU Clean Energy Club",
+        slug: "clean-energy-club",
+        description:
+          "Promoting sustainability and renewable energy solutions. We work on solar power projects, energy efficiency initiatives, and organize talks about the future of clean energy. Join us if you're passionate about making engineering more sustainable and addressing climate challenges.",
+        category: "Academic",
+        memberCount: 112,
+        contactEmail: "cleanenergy@ntu.edu.sg",
+        imageUrl: "/images/clubs/clean-energy.jpg",
+      },
+    }),
+    prisma.club.create({
+      data: {
+        name: "VI Pod",
+        slug: "vi-pod",
+        description:
+          "The Venture Incubation Pod supports entrepreneurial EEE students in developing startup ideas and innovation projects. Get mentorship, pitch your ideas, and connect with investors. Whether you have a tech startup concept or want to commercialize research, VI Pod helps turn visions into viable businesses.",
+        category: "Professional",
+        memberCount: 76,
+        contactEmail: "vipod@ntu.edu.sg",
+        website: "https://vipod.ntu.edu.sg",
+        imageUrl: "/images/clubs/vi-pod.jpg",
       },
     }),
   ]);
