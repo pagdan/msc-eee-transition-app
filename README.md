@@ -6,7 +6,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -23,127 +23,127 @@
 
 ---
 
-## 🎯 Overview
+## Overview
 
 The transition into a master's program presents significant challenges for incoming students, including adapting to academic requirements, navigating campus resources, and integrating into a new social environment. This web application addresses these challenges through four comprehensive pillars:
 
 ### Core Pillars
 
-1. **📅 Calendar** - Academic timetable integration and event management
-2. **👥 Community** - Clubs directory and discussion forums
-3. **🏫 Student Life** - Campus resources (dining, transportation, study spots)
-4. **💚 Well-being** - Mental health support and wellness tracking
+1. **Calendar** - Academic timetable integration and event management
+2. **Community** - Clubs directory and discussion forums
+3. **Student Life** - Campus resources (dining, transportation, study spots)
+4. **Well-being** - Mental health support and wellness tracking
 
 ---
 
-## ✨ Features
+## Features
 
 ### Completed Features
 
 #### Authentication & User Management
 
-- ✅ NextAuth.js-based authentication system
-- ✅ Demo credential-based login (Azure AD ready)
-- ✅ User profile management
-- ✅ Session persistence
+- NextAuth.js-based authentication system
+- Demo credential-based login (Azure AD ready)
+- User profile management
+- Session persistence
 
 #### Landing Page & Dashboard
 
-- ✅ Professional landing page with NTU branding (official colors: `#D7143F` red, `#181D62` blue)
-- ✅ Comprehensive dashboard with quick access to all modules
-- ✅ Resource carousel with Swiper.js integration
-- ✅ Smooth fade effects and auto-play functionality
-- ✅ Responsive design for mobile and desktop
+- Professional landing page with NTU branding (official colors: `#D7143F` red, `#181D62` blue)
+- Comprehensive dashboard with quick access to all modules
+- Resource carousel with Swiper.js integration
+- Smooth fade effects and auto-play functionality
+- Responsive design for mobile and desktop
 
 #### Events System
 
-- ✅ Event CRUD operations (Create, Read, Update, Delete)
-- ✅ 12 seeded events covering:
+- Event CRUD operations (Create, Read, Update, Delete)
+- 12 seeded events covering:
   - Orientation activities (campus tours, welcome reception)
   - Academic workshops (research methodology, thesis writing)
   - Professional development (career planning, networking)
   - Wellness activities (stress management, fitness)
   - Social events (cultural celebration, sports day)
-- ✅ Event detail pages with dynamic routing
-- ✅ Event filtering and display
-- ✅ Calendar integration architecture (Azure AD pending)
+- Event detail pages with dynamic routing
+- Event filtering and display
+- Calendar integration architecture (Azure AD pending)
 
 #### Community Module
 
-- ✅ Community page layout and navigation
-- ✅ Three-card carousel featuring:
+- Community page layout and navigation
+- Three-card carousel featuring:
   - Clubs directory entry point
   - Forum access
   - Social media links
-- ✅ Database models for clubs and forums
-- ✅ Foundation for forum system implementation
+- Database models for clubs and forums
+- Foundation for forum system implementation
 
 #### Contact System
 
-- ✅ Fully functional contact form
-- ✅ Backend API endpoint (`/api/contact`)
-- ✅ Database integration for message storage
-- ✅ Form validation and error handling
-- ✅ Success confirmation messaging
+- Fully functional contact form
+- Backend API endpoint (`/api/contact`)
+- Database integration for message storage
+- Form validation and error handling
+- Success confirmation messaging
 
 #### Mobile Support
 
-- ✅ Development server configured for mobile access
-- ✅ Responsive design tested on iPhone
-- ✅ Touch-optimized interfaces
-- ✅ Mobile authentication flow
+- Development server configured for mobile access
+- Responsive design tested on iPhone
+- Touch-optimized interfaces
+- Mobile authentication flow
 
 ### In Progress Features
 
 #### Forum System (Priority - 2-3 weeks)
 
-- 🔄 Post and comment CRUD operations
-- 🔄 UI for creating posts and threading comments
-- 🔄 Categories and tags organization
-- 🔄 Search functionality
+- Post and comment CRUD operations
+- UI for creating posts and threading comments
+- Categories and tags organization
+- Search functionality
 
 #### Clubs Directory (1-2 weeks)
 
-- 🔄 Browse and search interface
-- 🔄 Club detail pages
-- 🔄 Join/leave functionality
+- Browse and search interface
+- Club detail pages
+- Join/leave functionality
 
 ### Planned Features
 
 #### Calendar Integration
 
-- ⏳ Microsoft Outlook synchronization (pending Azure AD approval)
-- ⏳ Calendar event creation from web app
-- ⏳ Event reminders and notifications
+- Microsoft Outlook synchronization (pending Azure AD approval)
+- Calendar event creation from web app
+- Event reminders and notifications
 
 #### Student Life Module
 
-- ⏳ Dining locations API integration
-- ⏳ Bus routes and transportation info
-- ⏳ Study spots directory
+- Dining locations API integration
+- Bus routes and transportation info
+- Study spots directory
 
 #### Well-being Module
 
-- ⏳ Mental health resources
-- ⏳ Mood tracking system
-- ⏳ Wellness activity logging
+- Mental health resources
+- Mood tracking system
+- Wellness activity logging
 
 #### Admin Panel
 
-- ⏳ Role-based access control
-- ⏳ Content management system
-- ⏳ User management dashboard
+- Role-based access control
+- Content management system
+- User management dashboard
 
 #### Additional Features
 
-- ⏳ File upload system for images
-- ⏳ Global search functionality
-- ⏳ Email notifications
-- ⏳ In-app notifications
+- File upload system for images
+- Global search functionality
+- Email notifications
+- In-app notifications
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -172,30 +172,30 @@ The transition into a master's program presents significant challenges for incom
 
 ---
 
-## 📊 Project Status
+## Project Status
 
 **Overall Completion: ~50-60%**
 
 | Module               | Status              | Completion       |
 | -------------------- | ------------------- | ---------------- |
-| Authentication       | ✅ Complete         | 100%             |
-| Landing Page         | ✅ Complete         | 100%             |
-| Dashboard            | ✅ Complete         | 100%             |
-| Events System        | ✅ Complete         | 100%             |
-| Contact Form         | ✅ Complete         | 100%             |
-| Community Layout     | ✅ Complete         | 100%             |
-| Forum System         | 🔄 In Progress      | 20%              |
-| Clubs Directory      | ⏳ Planned          | 0%               |
-| Calendar Integration | ⏳ Pending Azure AD | 80% (code ready) |
-| Student Life         | ⏳ Planned          | 0%               |
-| Well-being           | ⏳ Planned          | 0%               |
-| Admin Panel          | ⏳ Planned          | 0%               |
+| Authentication       | Complete            | 100%             |
+| Landing Page         | Complete            | 100%             |
+| Dashboard            | Complete            | 100%             |
+| Events System        | Complete            | 100%             |
+| Contact Form         | Complete            | 100%             |
+| Community Layout     | Complete            | 100%             |
+| Forum System         | In Progress         | 20%              |
+| Clubs Directory      | Planned             | 0%               |
+| Calendar Integration | Pending Azure AD    | 80% (code ready) |
+| Student Life         | Planned             | 0%               |
+| Well-being           | Planned             | 0%               |
+| Admin Panel          | Planned             | 0%               |
 
 **Estimated Remaining Development Time: 6-10 weeks**
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -286,7 +286,7 @@ To test on your iPhone or other mobile devices:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 msc-eee-transition-portal/
@@ -329,7 +329,7 @@ msc-eee-transition-portal/
 
 ---
 
-## 🗄 Database Schema
+## Database Schema
 
 ### Core Models
 
@@ -366,7 +366,7 @@ For detailed schema, see `prisma/schema.prisma`
 
 ---
 
-## 🔐 Azure AD Integration
+## Azure AD Integration
 
 ### Current Status
 
@@ -384,11 +384,11 @@ The application is **architecturally ready** for Microsoft Azure Active Director
 
 The codebase is fully prepared for Azure AD integration:
 
-- ✅ NextAuth.js Azure AD provider configured (commented out)
-- ✅ Microsoft Graph API client implemented
-- ✅ Calendar sync logic complete
-- ✅ Token refresh handling ready
-- ✅ Comprehensive documentation prepared
+- NextAuth.js Azure AD provider configured (commented out)
+- Microsoft Graph API client implemented
+- Calendar sync logic complete
+- Token refresh handling ready
+- Comprehensive documentation prepared
 
 **Migration Path:** Once Azure AD credentials are obtained, integration requires only:
 
@@ -408,7 +408,7 @@ For complete Azure AD integration details, see:
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ### Landing Page
 
@@ -437,7 +437,7 @@ _Fully functional contact system with database backend_
 
 ---
 
-## 🔮 Future Development
+## Future Development
 
 ### Phase 1: Core Community Features (3-4 weeks)
 
@@ -471,7 +471,7 @@ Based on time constraints and project scope:
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Current Testing Setup
 
@@ -489,7 +489,7 @@ Based on time constraints and project scope:
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Planned Production Environment
 
@@ -509,7 +509,7 @@ Based on time constraints and project scope:
 
 ---
 
-## 👥 Academic Context
+## Academic Context
 
 This is a Final Year Project (FYP) for:
 
@@ -521,32 +521,31 @@ This is a Final Year Project (FYP) for:
 
 ---
 
-## 📝 License
+## License
 
 This project is developed as academic coursework for Nanyang Technological University. All rights reserved.
 
 ---
 
-## 📧 Contact
+## Contact
 
 **Project Developer:** Robert
 **Institution:** Nanyang Technological University
 **Programme:** Year 4 Information Engineering & Media
 
-For questions or support regarding this project, please use the contact form within the application or reach out through official NTU channels.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- **Supervisor:** [Professor Name] - Project guidance and feedback
+- **Supervisor:** Prof Michelle Shao Xu Guang - Project guidance and feedback
 - **NTU IT Services** - Technical infrastructure support
 - **MSc EEE Programme** - Problem domain insights
 - **Open Source Community** - Amazing tools and frameworks
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 ### Documentation
 
@@ -563,6 +562,6 @@ For questions or support regarding this project, please use the contact form wit
 
 ---
 
-**Last Updated:** November 2025
+**Last Updated:** February 2026
 **Version:** 0.6.0 (Development)
 **Status:** Active Development
