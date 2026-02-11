@@ -32,10 +32,9 @@ import Footer from "@/components/layout/Footer";
 const resources = [
   {
     icon: <Bus className="w-16 h-16 text-white" />,
-    title: "Bus Routes",
-    description:
-      "Explore the campus bus routes and schedules to get around easily.",
-    href: "/student-life/bus-routes",
+    title: "Getting Around",
+    description: "New to campus? Here's what you need to know.",
+    href: "/student-life/getting-around",
     gradient: "from-[#D7143F] to-[#B01030]",
   },
   {

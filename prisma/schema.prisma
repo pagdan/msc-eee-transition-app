@@ -105,38 +105,6 @@ model Club {
   @@map("clubs")
 }
 
-// Forum Posts
-model ForumPost {
-  id        String   @id @default(cuid())
-  title     String
-  content   String   @db.Text
-  category  String   // "general", "academics", "housing", "social"
-  authorId  String
-  isPinned  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  comments ForumComment[]
-
-  @@map("forum_posts")
-}
-
-// Forum Comments
-model ForumComment {
-  id        String   @id @default(cuid())
-  content   String   @db.Text
-  postId    String
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  post   ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  author User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  @@map("forum_comments")
-}
-
 // Dining Locations
 model DiningLocation {
   id          String   @id @default(cuid())
@@ -171,21 +139,6 @@ model StudySpot {
   updatedAt   DateTime @updatedAt
 
   @@map("study_spots")
-}
-
-// Bus Routes
-model BusRoute {
-  id          String   @id @default(cuid())
-  routeNumber String
-  routeName   String
-  description String?  @db.Text
-  schedule    Json     // Store schedule as JSON
-  stops       String[]
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("bus_routes")
 }
 
 // Wellbeing Resources
