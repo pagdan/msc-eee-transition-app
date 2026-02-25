@@ -309,51 +309,96 @@ async function main() {
   const studySpots = await Promise.all([
     prisma.studySpot.create({
       data: {
-        name: "Lee Wee Nam Library",
-        description:
-          "Main library with extensive study spaces, quiet zones, and 24/7 access. Perfect for focused study sessions.",
-        location: "Central Campus",
+        name: "Nanyang Business School @ Wee Cho Yaw Plaza",
+        location: "Wee Cho Yaw Plaza",
+        capacity: "medium",
+        amenities: ["Café", "Seating Areas", "Screens", "Breakout Rooms"],
+        openingHours: "Open 24 hours",
+        imageUrl: "/images/study-spots/nbs.jpg",
+        isAvailable: true,
+      },
+    }),
+    prisma.studySpot.create({
+      data: {
+        name: "The Hive @ Learning Hub South",
+        location: "Learning Hub South",
+        capacity: "medium",
+        amenities: ["Screens", "Café", "WiFi", "Power Outlets"],
+        openingHours: "Open 24 hours",
+        imageUrl: "/images/study-spots/hive.jpg",
+        isAvailable: true,
+      },
+    }),
+    prisma.studySpot.create({
+      data: {
+        name: "ADM Library @ School of ADM",
+        location: "School of ADM",
+        capacity: "small",
+        amenities: ["Quiet Zone", "WiFi"],
+        openingHours: "Open 24 hours",
+        imageUrl: "/images/study-spots/adm-library.jpg",
+        isAvailable: true,
+      },
+    }),
+    prisma.studySpot.create({
+      data: {
+        name: "NIE Library @ NIE Block 1",
+        location: "NIE Block 1",
+        capacity: "large",
+        amenities: ["Power Outlets", "Quiet Zone", "WiFi"],
+        openingHours: "Mon–Sat: 8:30am–8pm | Closed on Sundays",
+        imageUrl: "/images/study-spots/nie-library.jpg",
+        isAvailable: true,
+      },
+    }),
+    prisma.studySpot.create({
+      data: {
+        name: "The Arc @ Learning Hub North",
+        location: "Learning Hub North",
+        capacity: "medium",
+        amenities: ["Screens", "Power Outlets", "Group Study", "WiFi"],
+        openingHours: "Daily: 5am–11:30pm",
+        imageUrl: "/images/study-spots/arc.jpg",
+        isAvailable: true,
+      },
+    }),
+    prisma.studySpot.create({
+      data: {
+        name: "Lee Wee Nam Library @ North Spine",
+        location: "North Spine",
         capacity: "large",
         amenities: [
           "WiFi",
           "Power Outlets",
           "Quiet Zone",
-          "Air Conditioning",
-          "24/7 Access",
-          "Printing Services",
-        ],
-        openingHours: "24/7",
-        rating: 4.8,
-      },
-    }),
-    prisma.studySpot.create({
-      data: {
-        name: "The Hive",
-        description:
-          "Modern collaborative learning space with flexible seating and group study rooms.",
-        location: "North Spine",
-        capacity: "medium",
-        amenities: [
-          "WiFi",
-          "Power Outlets",
           "Group Study",
-          "Whiteboards",
-          "Air Conditioning",
+          "Screens",
         ],
-        openingHours: "8:00 AM - 11:00 PM",
-        rating: 4.6,
+        openingHours: "Mon–Sat: 8:30am–9:30pm | Closed on Sundays",
+        imageUrl: "/images/study-spots/lwn-library.jpg",
+        isAvailable: true,
       },
     }),
     prisma.studySpot.create({
       data: {
-        name: "S1 Level 3 Study Area",
-        description:
-          "Quiet study area near EEE labs. Convenient for EEE students.",
-        location: "S1 Building (EEE)",
+        name: "South Spine Benches",
+        location: "South Spine",
         capacity: "small",
-        amenities: ["WiFi", "Power Outlets", "Quiet Zone"],
-        openingHours: "7:00 AM - 10:00 PM",
-        rating: 4.3,
+        amenities: ["Power Outlets", "Fan-cooled"],
+        openingHours: "Open 24 hours",
+        imageUrl: "/images/study-spots/south-spine-benches.jpg",
+        isAvailable: true,
+      },
+    }),
+    prisma.studySpot.create({
+      data: {
+        name: "North Spine Benches",
+        location: "North Spine",
+        capacity: "small",
+        amenities: ["Power Outlets", "Fan-cooled"],
+        openingHours: "Open 24 hours",
+        imageUrl: "/images/study-spots/north-spine-benches.jpg",
+        isAvailable: true,
       },
     }),
   ]);
