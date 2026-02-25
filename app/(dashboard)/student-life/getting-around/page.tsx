@@ -152,7 +152,7 @@ export default function GettingAroundPage() {
                 <li>• S1 Building (EEE Lecture Halls)</li>
                 <li>• S2 Building (EEE Labs)</li>
                 <li>• North Spine Plaza (Food & Shops)</li>
-                <li>• Lee Wee Nam Library</li>
+                <li>• Lee Wee Nam Library (North Spine Plaza)</li>
               </ul>
             </div>
             <div className="bg-white rounded-lg p-4 shadow-sm">

@@ -109,12 +109,6 @@ export default function HomePage() {
             <p className="text-xl text-white/90 mb-8">
               Wellbeing is a crucial aspect of your academic journey at NTU.
             </p>
-            <Link
-              href="/calendar"
-              className="inline-block bg-white text-[#D7143F] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
-            >
-              Get Started
-            </Link>
           </div>
         </div>
       </section>
