@@ -160,41 +160,145 @@ async function main() {
   console.log(`✅ Created ${clubs.length} clubs`);
 
   // Create sample dining locations
+
   const dining = await Promise.all([
     prisma.diningLocation.create({
       data: {
-        name: "Canteen 2",
-        description:
-          "Popular canteen in South Spine with diverse food options. Great for quick meals between classes.",
-        location: "South Spine",
-        cuisine: ["Chinese", "Malay", "Indian", "Western"],
-        priceRange: "$",
-        openingHours: "7:00 AM - 9:00 PM",
-        rating: 4.2,
-      },
-    }),
-    prisma.diningLocation.create({
-      data: {
-        name: "Koufu @ Canteen 16",
-        description:
-          "Modern air-conditioned food court with variety of Asian and Western cuisines.",
+        name: "McDonald's @ North Spine Plaza",
         location: "North Spine Plaza",
-        cuisine: ["Japanese", "Korean", "Western", "Chinese"],
-        priceRange: "$$",
-        openingHours: "8:00 AM - 10:00 PM",
-        rating: 4.5,
+        cuisine: ["Western", "American", "Halal", "Vegetarian"],
+        openingHours: "Mon–Sat: 7am–10pm | Sun & PH: 10am–8pm",
+        imageUrl: "/images/food/mcdonalds.jpg",
+        priceRange: "$",
+        isOpen: true,
       },
     }),
     prisma.diningLocation.create({
       data: {
-        name: "North Hill Food Court",
-        description:
-          "Student favorite with affordable meals and late night options.",
-        location: "North Hill",
-        cuisine: ["Chinese", "Malay", "Western", "Vegetarian"],
+        name: "Subway @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Western", "Halal", "Vegetarian"],
+        openingHours: "Mon–Fri: 8am–9pm | Sat, Sun & PH: 11am–7pm",
+        imageUrl: "/images/food/subway.jpg",
         priceRange: "$",
-        openingHours: "7:00 AM - 11:00 PM",
-        rating: 4.0,
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Starbucks @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Café"],
+        openingHours: "Mon–Fri: 7am–10pm | Sat, Sun & PH: 8am–8pm",
+        imageUrl: "/images/food/starbucks.jpg",
+        priceRange: "$$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Popeyes @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Western", "American", "Halal"],
+        openingHours: "Mon–Fri: 10am–9pm | Sat, Sun & PH: 11am–9pm",
+        imageUrl: "/images/food/popeyes.jpg",
+        priceRange: "$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Pasta Express @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Italian", "Vegetarian"],
+        openingHours: "Mon–Fri: 10:30am–7:30pm | Sat: 10:30am–1:30pm",
+        imageUrl: "/images/food/pasta-express.jpg",
+        priceRange: "$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Paik's Bibim @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Korean", "Vegetarian"],
+        openingHours: "Mon–Fri: 10am–9pm | Sat: 10am–8pm",
+        imageUrl: "/images/food/paiks-bibim.jpg",
+        priceRange: "$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "South Spine Food Court",
+        location: "South Spine",
+        cuisine: [
+          "Chinese",
+          "Malay",
+          "Indian",
+          "Western",
+          "Halal",
+          "Vegetarian",
+        ],
+        openingHours: "Mon–Fri: 7am–8pm | Sat: 7am–2pm",
+        imageUrl: "/images/food/south-spine-food-court.jpg",
+        priceRange: "$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "The Crowded Bowl @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Vegetarian only"],
+        openingHours: "Mon–Fri: 8am–8pm | Sat: 8am–5pm",
+        imageUrl: "/images/food/crowded-bowl.jpg",
+        priceRange: "$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Connect 71 Cafe @ NTU Innovation Centre",
+        location: "NTU Innovation Centre",
+        cuisine: ["Café", "Western"],
+        openingHours: "Mon–Fri: 9am–9pm",
+        imageUrl: "/images/food/connect71.jpg",
+        priceRange: "$$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Domino's Pizza @ The Arc",
+        location: "The Arc",
+        cuisine: ["Pizza", "Western", "Vegetarian"],
+        openingHours: "Daily: 10:30am–11pm",
+        imageUrl: "/images/food/dominos.jpg",
+        priceRange: "$$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "Encik Tan @ North Spine Plaza",
+        location: "North Spine Plaza",
+        cuisine: ["Malay", "Halal"],
+        openingHours: "Daily: 9:30am–7:45pm",
+        imageUrl: "/images/food/encik-tan.jpg",
+        priceRange: "$",
+        isOpen: true,
+      },
+    }),
+    prisma.diningLocation.create({
+      data: {
+        name: "North Spine Food Court",
+        location: "North Spine Plaza",
+        cuisine: ["Chinese", "Malay", "Indian", "Western", "Vegetarian"],
+        openingHours: "Mon–Fri: 6:30am–8:30pm | Sat: 6:30am–2:30pm",
+        imageUrl: "/images/food/north-spine-food-court.jpg",
+        priceRange: "$",
+        isOpen: true,
       },
     }),
   ]);
