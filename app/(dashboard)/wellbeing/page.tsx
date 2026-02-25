@@ -41,14 +41,14 @@ const resources = [
     description:
       "Explore resources and support services for emotional wellbeing on campus.",
     href: "/wellbeing/emotional",
-    gradient: "from-[#D7143F] to-[#B01030]",
+    gradient: "from-[#F5DA27] to-[#B01030]",
   },
   {
     icon: <LucideHeart className="w-16 h-16 text-white" />,
     title: "Physical Wellbeing",
     description: "Discover how to maintain a healthy lifestyle on campus.",
     href: "/wellbeing/physical",
-    gradient: "from-[#181D62] to-[#0F1142]",
+    gradient: "from-[#F52727] to-[#0F1142]",
   },
   {
     icon: <LucideHelpingHand className="w-16 h-16 text-white" />,
@@ -56,7 +56,7 @@ const resources = [
     description:
       "Find ways to connect with others and build a supportive community.",
     href: "/wellbeing/social",
-    gradient: "from-purple-600 to-purple-800",
+    gradient: "from-[#F5276F] to-purple-800",
   },
 ];
 

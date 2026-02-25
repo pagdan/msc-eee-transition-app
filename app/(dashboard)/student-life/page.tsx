@@ -35,7 +35,7 @@ const resources = [
     title: "Getting Around",
     description: "New to campus? Here's what you need to know.",
     href: "/student-life/getting-around",
-    gradient: "from-[#D7143F] to-[#B01030]",
+    gradient: "from-[#F54927] to-[#B01030]",
   },
   {
     icon: <ForkKnifeCrossed className="w-16 h-16 text-white" />,
@@ -43,7 +43,7 @@ const resources = [
     description:
       "Discover the best dining spots on campus and get recommendations from fellow students.",
     href: "/student-life/food-recos",
-    gradient: "from-[#181D62] to-[#0F1142]",
+    gradient: "from-[#2761F5] to-[#0F1142]",
   },
   {
     icon: <Mouse className="w-16 h-16 text-white" />,
@@ -51,7 +51,7 @@ const resources = [
     description:
       "Discover the best study locations on campus and get recommendations from fellow students.",
     href: "/student-life/study-spots",
-    gradient: "from-purple-600 to-purple-800",
+    gradient: "from-[#CC27F5] to-purple-800",
   },
 ];
 
