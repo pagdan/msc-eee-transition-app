@@ -19,14 +19,13 @@ model User {
   programme     String?   @default("MSc EEE")
   yearOfStudy   Int?      @default(1)
   emailVerified DateTime?
+  role  String  @default("student") // "student" | "admin"
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   accounts      Account[]
   sessions      Session[]
   calendarEvents CalendarEvent[]
-  forumPosts    ForumPost[]
-  forumComments ForumComment[]
   wellbeingLogs WellbeingLog[]
 
   @@map("users")

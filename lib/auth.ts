@@ -21,7 +21,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     */
-
     // Credentials provider for development/testing
     CredentialsProvider({
       name: "Credentials",
@@ -34,18 +33,14 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // For development - just check if user exists
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        // In production, verify password hash here
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        // For now, accept any password for existing users
-        // TODO: Add proper password hashing with bcrypt
         if (!user) {
           // Auto-create user for testing
           const newUser = await prisma.user.create({
@@ -79,8 +74,16 @@ export const authOptions: NextAuthOptions = {
     error: "/login",
   },
   callbacks: {
-    async jwt({ token, account, profile }) {
-      // Persist the OAuth access_token to the token
+    async jwt({ token, user, account }) {
+      // Fetch role from DB on sign in (when user object is present)
+      if (user) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email! },
+          select: { role: true },
+        });
+        token.role = dbUser?.role ?? "student";
+      }
+      // Persist OAuth tokens
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
@@ -88,35 +91,26 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // Add access token to session for MS Graph API calls
       if (session.user) {
         session.user.id = token.sub!;
+        session.user.role = token.role as string;
         session.accessToken = token.accessToken as string;
       }
       return session;
     },
-    // ✅ Fixed redirect callback
     async redirect({ url, baseUrl }) {
-      // Always use relative paths to work with any domain/IP
-      // If the url is a relative path, use it directly
       if (url.startsWith("/")) {
         return url;
       }
-
-      // If it's an absolute URL on the same origin, extract the path
       try {
         const urlObj = new URL(url);
         const baseUrlObj = new URL(baseUrl);
-
-        // If same origin, return the path
         if (urlObj.origin === baseUrlObj.origin) {
           return urlObj.pathname;
         }
       } catch (e) {
         // If URL parsing fails, default to dashboard
       }
-
-      // Default: redirect to dashboard (relative path)
       return "/dashboard";
     },
   },

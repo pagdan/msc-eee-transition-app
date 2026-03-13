@@ -14,6 +14,7 @@ import {
   LogOut,
   Settings,
   User,
+  LayoutDashboard,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -46,12 +47,14 @@ const navigation = [
 interface NavbarProps {
   userEmail?: string | null;
   userName?: string | null;
+  userRole?: string | null;
 }
 
-export default function Navbar({ userEmail, userName }: NavbarProps) {
+export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const isAdmin = userRole === "admin";
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/" });
@@ -100,6 +103,21 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
                 </Link>
               );
             })}
+
+            {/* Admin link — only visible to admins */}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                  pathname.startsWith("/admin")
+                    ? "bg-[#181D62] text-white"
+                    : "text-[#181D62] hover:bg-white/50"
+                }`}
+              >
+                <LayoutDashboard className="w-5 h-5" />
+                <span className="font-medium">Admin</span>
+              </Link>
+            )}
           </nav>
 
           {/* Right: Search & Profile */}
@@ -126,12 +144,10 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
               {/* Profile Dropdown Menu */}
               {profileMenuOpen && (
                 <>
-                  {/* Backdrop to close menu */}
                   <div
                     className="fixed inset-0 z-10"
                     onClick={() => setProfileMenuOpen(false)}
                   />
-
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
                     <div className="px-4 py-2 border-b border-gray-100">
                       <p className="text-sm font-medium text-gray-900 truncate">
@@ -140,6 +156,11 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
                       <p className="text-xs text-gray-500 truncate">
                         {userEmail}
                       </p>
+                      {isAdmin && (
+                        <span className="inline-block mt-1 text-[10px] font-bold bg-[#181D62] text-white px-2 py-0.5 rounded-full">
+                          ADMIN
+                        </span>
+                      )}
                     </div>
                     <button
                       className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
@@ -148,6 +169,16 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
                       <Settings className="w-4 h-4" />
                       <span>Settings</span>
                     </button>
+                    {isAdmin && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setProfileMenuOpen(false)}
+                        className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-[#181D62] hover:bg-blue-50"
+                      >
+                        <LayoutDashboard className="w-4 h-4" />
+                        <span>Admin Dashboard</span>
+                      </Link>
+                    )}
                     <button
                       className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                       onClick={handleSignOut}
@@ -199,6 +230,22 @@ export default function Navbar({ userEmail, userName }: NavbarProps) {
                 </Link>
               );
             })}
+
+            {/* Admin link — mobile, only visible to admins */}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                  pathname.startsWith("/admin")
+                    ? "bg-[#181D62] text-white"
+                    : "text-gray-700 hover:bg-white/50"
+                }`}
+              >
+                <LayoutDashboard className="w-5 h-5" />
+                <span className="font-medium">Admin</span>
+              </Link>
+            )}
           </nav>
         </div>
       )}

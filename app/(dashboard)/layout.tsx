@@ -31,7 +31,11 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation Bar */}
-      <Navbar userEmail={session?.user?.email} userName={session?.user?.name} />
+      <Navbar
+        userEmail={session?.user?.email}
+        userName={session?.user?.name}
+        userRole={session?.user?.role}
+      />
 
       {/* Main Content */}
       <main>{children}</main>
