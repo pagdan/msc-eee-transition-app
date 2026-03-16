@@ -39,14 +39,6 @@ const resources = [
     gradient: "from-[#D7143F] to-[#B01030]",
   },
   {
-    icon: <MessageCircle className="w-16 h-16 text-white" />,
-    title: "Forum",
-    description:
-      "Chat with fellow MSc EEE students, ask questions, and share your experiences.",
-    href: "/community/forum",
-    gradient: "from-[#181D62] to-[#0F1142]",
-  },
-  {
     icon: <Instagram className="w-16 h-16 text-white" />,
     title: "Social Media",
     description:

@@ -50,14 +50,6 @@ const resources = [
     href: "/wellbeing/physical",
     gradient: "from-[#F52727] to-[#0F1142]",
   },
-  {
-    icon: <LucideHelpingHand className="w-16 h-16 text-white" />,
-    title: "Social Wellbeing",
-    description:
-      "Find ways to connect with others and build a supportive community.",
-    href: "/wellbeing/social",
-    gradient: "from-[#F5276F] to-purple-800",
-  },
 ];
 
 interface Event {
