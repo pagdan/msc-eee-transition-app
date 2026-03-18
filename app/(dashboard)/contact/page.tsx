@@ -22,15 +22,26 @@ export default function ContactUsPage() {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Log the form data to console
-    console.log("Form submitted with data:", formData);
-    // Show success message
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    // Clear the form
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 3000);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        const data = await res.json();
+        alert(data.error ?? "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   const handleChange = (
