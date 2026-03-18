@@ -303,10 +303,47 @@ function ResourceCard({
 }
 
 function EventCard({ event }: { event: Event }) {
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
+
   const handleAddToCalendar = async (e: React.MouseEvent) => {
     e.preventDefault();
-    // TODO: Implement add to calendar functionality
-    alert("Add to calendar functionality will be implemented");
+    if (adding || added) return;
+
+    setAdding(true);
+
+    const eventDate = new Date(event.date);
+    const startTime = new Date(eventDate);
+    startTime.setHours(9, 0, 0, 0); // default 9am
+    const endTime = new Date(eventDate);
+    endTime.setHours(10, 0, 0, 0); // default 10am
+
+    try {
+      const res = await fetch("/api/calendar/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: event.title,
+          description: event.subtitle,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          isAllDay: false,
+          category: "social",
+        }),
+      });
+
+      if (res.ok) {
+        setAdded(true);
+        // Reset after 3 seconds
+        setTimeout(() => setAdded(false), 3000);
+      } else {
+        alert("Failed to add event to calendar. Please try again.");
+      }
+    } catch {
+      alert("Something went wrong. Please try again.");
+    }
+
+    setAdding(false);
   };
 
   return (
@@ -357,10 +394,54 @@ function EventCard({ event }: { event: Event }) {
           </Link>
           <button
             onClick={handleAddToCalendar}
-            className="px-4 py-2 bg-[#D9D9D9] text-[#181D62] rounded-lg hover:bg-[#181D62] hover:text-white transition-colors"
+            disabled={adding || added}
+            className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center ${
+              added
+                ? "bg-green-100 text-green-600"
+                : "bg-[#D9D9D9] text-[#181D62] hover:bg-[#181D62] hover:text-white"
+            }`}
             aria-label="Add to calendar"
+            title={added ? "Added to calendar!" : "Add to calendar"}
           >
-            <Plus className="w-5 h-5" />
+            {adding ? (
+              // Spinner
+              <svg
+                className="w-5 h-5 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                />
+              </svg>
+            ) : added ? (
+              // Checkmark
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            ) : (
+              <Plus className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>

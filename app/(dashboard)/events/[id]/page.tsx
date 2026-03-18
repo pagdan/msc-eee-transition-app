@@ -20,6 +20,8 @@ export default function EventDetailPage() {
   const router = useRouter();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     fetchEvent();
@@ -40,8 +42,44 @@ export default function EventDetailPage() {
     }
   };
 
-  const handleAddToCalendar = () => {
-    alert("Add to calendar functionality will be implemented");
+  const handleAddToCalendar = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (adding || added) return;
+
+    setAdding(true);
+
+    const eventDate = new Date(event.date);
+    const startTime = new Date(eventDate);
+    startTime.setHours(9, 0, 0, 0); // default 9am
+    const endTime = new Date(eventDate);
+    endTime.setHours(10, 0, 0, 0); // default 10am
+
+    try {
+      const res = await fetch("/api/calendar/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: event.title,
+          description: event.subtitle,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          isAllDay: false,
+          category: "social",
+        }),
+      });
+
+      if (res.ok) {
+        setAdded(true);
+        // Reset after 3 seconds
+        setTimeout(() => setAdded(false), 3000);
+      } else {
+        alert("Failed to add event to calendar. Please try again.");
+      }
+    } catch {
+      alert("Something went wrong. Please try again.");
+    }
+
+    setAdding(false);
   };
 
   if (loading) {
@@ -119,10 +157,57 @@ export default function EventDetailPage() {
 
           <button
             onClick={handleAddToCalendar}
-            className="flex items-center space-x-2 px-6 py-3 bg-[#D7143F] text-white rounded-lg hover:bg-[#B01030] transition-colors"
+            disabled={adding || added}
+            className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+              added
+                ? "bg-green-500 text-white"
+                : "bg-[#D7143F] text-white hover:bg-[#B01030]"
+            }`}
           >
-            <Plus className="w-5 h-5" />
-            <span>Add to Calendar</span>
+            {adding ? (
+              <svg
+                className="w-5 h-5 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                />
+              </svg>
+            ) : added ? (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            ) : (
+              <Plus className="w-5 h-5" />
+            )}
+            <span>
+              {adding
+                ? "Adding..."
+                : added
+                  ? "Added to Calendar!"
+                  : "Add to Calendar"}
+            </span>
           </button>
         </div>
 

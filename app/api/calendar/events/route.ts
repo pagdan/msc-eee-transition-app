@@ -1,179 +1,87 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/session";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getCalendarEvents } from "@/lib/microsoft-graph";
 
-// GET - Fetch calendar events
-export async function GET(req: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
-    const { searchParams } = new URL(req.url);
-    const startDate = searchParams.get("startDate");
-    const endDate = searchParams.get("endDate");
-    const syncOutlook = searchParams.get("syncOutlook") === "true";
-
-    // Fetch from database
-    const events = await prisma.calendarEvent.findMany({
-      where: {
-        userId: session.user.id,
-        ...(startDate &&
-          endDate && {
-            startTime: {
-              gte: new Date(startDate),
-              lte: new Date(endDate),
-            },
-          }),
-      },
-      orderBy: {
-        startTime: "asc",
-      },
-    });
-
-    // Optionally sync with Outlook
-    if (syncOutlook && session.accessToken) {
-      try {
-        const outlookEvents = await getCalendarEvents(
-          session.accessToken,
-          startDate || undefined,
-          endDate || undefined,
-        );
-
-        // Sync Outlook events to database
-        for (const outlookEvent of outlookEvents) {
-          await prisma.calendarEvent.upsert({
-            where: {
-              outlookId: outlookEvent.id,
-            },
-            update: {
-              title: outlookEvent.subject,
-              description: outlookEvent.bodyPreview,
-              startTime: new Date(outlookEvent.start.dateTime),
-              endTime: new Date(outlookEvent.end.dateTime),
-              location: outlookEvent.location?.displayName,
-              isAllDay: outlookEvent.isAllDay,
-            },
-            create: {
-              userId: session.user.id,
-              outlookId: outlookEvent.id,
-              title: outlookEvent.subject,
-              description: outlookEvent.bodyPreview,
-              startTime: new Date(outlookEvent.start.dateTime),
-              endTime: new Date(outlookEvent.end.dateTime),
-              location: outlookEvent.location?.displayName,
-              isAllDay: outlookEvent.isAllDay,
-              category: "academic",
-            },
-          });
-        }
-
-        // Refetch after sync
-        const updatedEvents = await prisma.calendarEvent.findMany({
-          where: {
-            userId: session.user.id,
-            ...(startDate &&
-              endDate && {
-                startTime: {
-                  gte: new Date(startDate),
-                  lte: new Date(endDate),
-                },
-              }),
-          },
-          orderBy: {
-            startTime: "asc",
-          },
-        });
-
-        return NextResponse.json({
-          success: true,
-          data: updatedEvents,
-          message: "Calendar synced successfully",
-        });
-      } catch (error) {
-        console.error("Error syncing with Outlook:", error);
-        // Return local events even if sync fails
-        return NextResponse.json({
-          success: true,
-          data: events,
-          message: "Failed to sync with Outlook, showing local events",
-        });
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      data: events,
-    });
-  } catch (error) {
-    console.error("Error fetching calendar events:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch calendar events" },
-      { status: 500 },
-    );
-  }
+async function requireUser() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) return null;
+  return session;
 }
 
-// POST - Create new calendar event
+// GET - fetch all events for the logged-in user
+export async function GET() {
+  const session = await requireUser();
+  if (!session)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const events = await prisma.calendarEvent.findMany({
+    where: { userId: session.user.id },
+    orderBy: { startTime: "asc" },
+  });
+
+  return NextResponse.json(events);
+}
+
+// POST - create a new event
 export async function POST(req: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions);
+  const session = await requireUser();
+  if (!session)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
-    }
+  const body = await req.json();
+  const {
+    title,
+    description,
+    location,
+    startTime,
+    endTime,
+    isAllDay,
+    category,
+  } = body;
 
-    const body = await req.json();
-    const {
-      title,
-      description,
-      startTime,
-      endTime,
-      location,
-      category,
-      isAllDay,
-    } = body;
-
-    // Validate required fields
-    if (!title || !startTime || !endTime) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields" },
-        { status: 400 },
-      );
-    }
-
-    const event = await prisma.calendarEvent.create({
-      data: {
-        userId: session.user.id,
-        title,
-        description,
-        startTime: new Date(startTime),
-        endTime: new Date(endTime),
-        location,
-        category,
-        isAllDay: isAllDay || false,
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      data: event,
-      message: "Event created successfully",
-    });
-  } catch (error) {
-    console.error("Error creating calendar event:", error);
+  if (!title || !startTime || !endTime) {
     return NextResponse.json(
-      { success: false, error: "Failed to create calendar event" },
-      { status: 500 },
+      { error: "Title, start time, and end time are required" },
+      { status: 400 },
     );
   }
+
+  const event = await prisma.calendarEvent.create({
+    data: {
+      userId: session.user.id,
+      title,
+      description: description || null,
+      location: location || null,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      isAllDay: isAllDay ?? false,
+      category: category || null,
+    },
+  });
+
+  return NextResponse.json(event, { status: 201 });
+}
+
+// DELETE - delete an event
+export async function DELETE(req: NextRequest) {
+  const session = await requireUser();
+  if (!session)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await req.json();
+  if (!id)
+    return NextResponse.json({ error: "ID is required" }, { status: 400 });
+
+  // Ensure the event belongs to the user
+  const event = await prisma.calendarEvent.findFirst({
+    where: { id, userId: session.user.id },
+  });
+
+  if (!event)
+    return NextResponse.json({ error: "Event not found" }, { status: 404 });
+
+  await prisma.calendarEvent.delete({ where: { id } });
+
+  return NextResponse.json({ success: true });
 }
