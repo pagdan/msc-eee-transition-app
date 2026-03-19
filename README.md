@@ -16,130 +16,103 @@
 - [Project Structure](#project-structure)
 - [Database Schema](#database-schema)
 - [Azure AD Integration](#azure-ad-integration)
-- [Screenshots](#screenshots)
 - [Future Development](#future-development)
-- [Contributing](#contributing)
+- [Academic Context](#academic-context)
 - [License](#license)
+- [Acknowledgments](#acknowledgments)
 
 ---
 
 ## Overview
 
-The transition into a master's program presents significant challenges for incoming students, including adapting to academic requirements, navigating campus resources, and integrating into a new social environment. This web application addresses these challenges through four comprehensive pillars:
+The transition into a master's programme presents significant challenges for incoming students, including adapting to new academic requirements, navigating campus resources, and integrating into a new social and cultural environment. This web application addresses these challenges through four comprehensive pillars:
 
 ### Core Pillars
 
-1. **Calendar** - Academic timetable integration and event management
-2. **Community** - Clubs directory and discussion forums
-3. **Student Life** - Campus resources (dining, transportation, study spots)
-4. **Well-being** - Mental health support and wellness tracking
+1. **Calendar** — Personal event management with Microsoft Outlook integration architecture
+2. **Community** — EEE clubs directory and social media hub
+3. **Student Life** — Campus resources including dining recommendations, study spots, and transport information
+4. **Well-being** — Emotional and physical wellness support and resources
 
 ---
 
 ## Features
 
-### Completed Features
+### Authentication and User Management
 
-#### Authentication & User Management
+- NextAuth.js-based authentication with JWT session strategy
+- Demo credential-based login for prototyping purposes
+- Role-based access control with student and admin roles
+- Azure AD provider pre-configured and ready for activation upon NTU IT approval
+- Session persistence and middleware-based route protection
 
-- NextAuth.js-based authentication system
-- Demo credential-based login (Azure AD ready)
-- User profile management
-- Session persistence
+### Landing Page and Dashboard
 
-#### Landing Page & Dashboard
-
-- Professional landing page with NTU branding (official colors: `#D7143F` red, `#181D62` blue)
-- Comprehensive dashboard with quick access to all modules
-- Resource carousel with Swiper.js integration
-- Smooth fade effects and auto-play functionality
+- Professional landing page with NTU branding (official colours: `#D7143F` red, `#181D62` navy)
+- Dashboard with upcoming events grid and resource carousel
+- Swiper.js carousel with fade effect and autoplay
 - Responsive design for mobile and desktop
+- Add to Calendar button on each dashboard event card
 
-#### Events System
+### Events System
 
-- Event CRUD operations (Create, Read, Update, Delete)
-- 12 seeded events covering:
-  - Orientation activities (campus tours, welcome reception)
-  - Academic workshops (research methodology, thesis writing)
-  - Professional development (career planning, networking)
-  - Wellness activities (stress management, fitness)
-  - Social events (cultural celebration, sports day)
-- Event detail pages with dynamic routing
-- Event filtering and display
-- Calendar integration architecture (Azure AD pending)
+- Full event CRUD with title, subtitle, date, image, content, and published status
+- 12 seeded events drawn from real NTU MSc EEE programme activities
+- Individual event detail pages with dynamic routing
+- Add to Calendar integration on both the dashboard and event detail pages
 
-#### Community Module
+### Calendar Module
 
-- Community page layout and navigation
-- Three-card carousel featuring:
-  - Clubs directory entry point
-  - Forum access
-  - Social media links
-- Database models for clubs and forums
-- Foundation for forum system implementation
+- Interactive monthly grid calendar with previous and next month navigation
+- Per-user personal events stored in the database, scoped by authenticated user
+- Event creation via modal form with title, category, date, time, location, and description
+- Five event categories with colour coding: Academic, Orientation, Social, Deadline, Personal
+- Day panel showing events for the selected date with inline delete
+- Next 7 Days panel for quick visibility of upcoming personal events
+- Upcoming NTU community events section below the calendar with Add to Calendar functionality
+- Outlook sync notice explaining the Azure AD pending approval constraint
 
-#### Contact System
+### Community Module
 
-- Fully functional contact form
-- Backend API endpoint (`/api/contact`)
-- Database integration for message storage
-- Form validation and error handling
-- Success confirmation messaging
+- Clubs directory featuring 9 real NTU EEE student clubs
+- Search and category filter (Academic, Technical, Professional, Social)
+- Slug-based club detail pages with full descriptions
+- Social media hub with Facebook, Instagram, and LinkedIn links per club
+- Community landing page with Swiper.js carousel
 
-#### Mobile Support
+### Student Life Module
 
-- Development server configured for mobile access
-- Responsive design tested on iPhone
-- Touch-optimized interfaces
-- Mobile authentication flow
+- Food Recommendations page (`/student-life/food-recos`) with 12 real NTU dining locations
+- Search and filter by cuisine, dietary requirement (Halal, Vegetarian), and location
+- Halal and Vegetarian badge overlays on dining cards
+- Google Maps links for each dining location
+- Study Spots page (`/student-life/study-spots`) with 8 campus study locations
+- Search and filter by capacity, amenities, and location
+- Capacity badges (Small, Medium, Large) and amenity icon pills
+- Google Maps links for 6 study spots with verified coordinates
+- Getting Around page with NTU campus shuttle information and NTU Omnibus app links
 
-### In Progress Features
+### Well-being Module
 
-#### Forum System (Priority - 2-3 weeks)
+- Emotional Well-being page with crisis contact banner, University Counselling Centre details, NTU support service cards, practical transition tips for MSc EEE students, and curated self-help resources including national helplines
+- Physical Well-being page with campus gym details, NTU Swimming Complex hours and directions, racket and team sports facility tables, facility booking portal link, and SRC General Office contact information
 
-- Post and comment CRUD operations
-- UI for creating posts and threading comments
-- Categories and tags organization
-- Search functionality
+### Contact System
 
-#### Clubs Directory (1-2 weeks)
+- Fully functional contact form with client-side and server-side validation
+- Database-backed submission storage via Prisma
+- Success and error feedback on submission
 
-- Browse and search interface
-- Club detail pages
-- Join/leave functionality
+### Admin Dashboard
 
-### Planned Features
-
-#### Calendar Integration
-
-- Microsoft Outlook synchronization (pending Azure AD approval)
-- Calendar event creation from web app
-- Event reminders and notifications
-
-#### Student Life Module
-
-- Dining locations API integration
-- Bus routes and transportation info
-- Study spots directory
-
-#### Well-being Module
-
-- Mental health resources
-- Mood tracking system
-- Wellness activity logging
-
-#### Admin Panel
-
-- Role-based access control
-- Content management system
-- User management dashboard
-
-#### Additional Features
-
-- File upload system for images
-- Global search functionality
-- Email notifications
-- In-app notifications
+- Protected `/admin` route group accessible only to users with the admin role
+- Collapsible navy sidebar navigation with Back to App link
+- Overview page with live counts for all content modules and a new submissions badge
+- Full CRUD for Events with published/draft toggle
+- Full CRUD for Dining Locations with inline visibility toggle
+- Full CRUD for Study Spots with capacity selector and inline visibility toggle
+- Full CRUD for Clubs with auto-generated slugs and social media fields
+- Contact Submissions management with status tracking (new, read, resolved), full message detail modal, auto-mark as read on open, and Reply via Email shortcut
 
 ---
 
@@ -147,51 +120,52 @@ The transition into a master's program presents significant challenges for incom
 
 ### Frontend
 
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first CSS framework
-- **Swiper.js** - Modern touch slider for carousels
+- **Next.js 14** — React framework with App Router
+- **TypeScript** — Type-safe development
+- **Tailwind CSS** — Utility-first CSS framework
+- **Swiper.js** — Touch slider for carousels
+- **Lucide React** — Icon library
 
 ### Backend
 
-- **Next.js API Routes** - Serverless API endpoints
-- **NextAuth.js** - Authentication solution
-- **Prisma ORM** - Type-safe database client
-- **PostgreSQL** - Relational database (hosted on Supabase)
+- **Next.js API Routes** — Serverless API endpoints
+- **NextAuth.js v4** — Authentication with JWT strategy
+- **Prisma ORM** — Type-safe database client
+- **PostgreSQL** — Relational database hosted on Supabase
 
 ### Development Tools
 
-- **Zed** - Code editor
-- **npm** - Package manager
-- **Git** - Version control
+- **Zed** — Code editor
+- **npm** — Package manager
+- **Git and GitHub** — Version control
+- **Prisma Studio** — Database inspection and management
 
-### Deployment (Planned)
+### Deployment
 
-- **Vercel** - Frontend hosting
-- **Supabase** - PostgreSQL database hosting
+- **Vercel** — Frontend and API hosting
+- **Supabase** — PostgreSQL database hosting
 
 ---
 
 ## Project Status
 
-**Overall Completion: ~50-60%**
+**Overall Completion: approximately 90%**
 
-| Module               | Status              | Completion       |
-| -------------------- | ------------------- | ---------------- |
-| Authentication       | Complete            | 100%             |
-| Landing Page         | Complete            | 100%             |
-| Dashboard            | Complete            | 100%             |
-| Events System        | Complete            | 100%             |
-| Contact Form         | Complete            | 100%             |
-| Community Layout     | Complete            | 100%             |
-| Forum System         | In Progress         | 20%              |
-| Clubs Directory      | Planned             | 0%               |
-| Calendar Integration | Pending Azure AD    | 80% (code ready) |
-| Student Life         | Planned             | 0%               |
-| Well-being           | Planned             | 0%               |
-| Admin Panel          | Planned             | 0%               |
-
-**Estimated Remaining Development Time: 6-10 weeks**
+| Module                   | Status           | Completion |
+| ------------------------ | ---------------- | ---------- |
+| Authentication and Roles | Complete         | 100%       |
+| Landing Page             | Complete         | 100%       |
+| Dashboard                | Complete         | 100%       |
+| Events System            | Complete         | 100%       |
+| Contact Form             | Complete         | 100%       |
+| Calendar Module          | Complete         | 100%       |
+| Community Module         | Complete         | 100%       |
+| Student Life Module      | Complete         | 100%       |
+| Emotional Well-being     | Complete         | 100%       |
+| Physical Well-being      | Complete         | 100%       |
+| Admin Dashboard          | Complete         | 100%       |
+| Calendar Outlook Sync    | Pending Azure AD | Deferred   |
+| Deployment               | In Progress      | 0%         |
 
 ---
 
@@ -199,9 +173,9 @@ The transition into a master's program presents significant challenges for incom
 
 ### Prerequisites
 
-- Node.js 18+
-- PostgreSQL database (or Supabase account)
-- npm or yarn
+- Node.js 18 or later
+- PostgreSQL database or Supabase account
+- npm
 
 ### Installation
 
@@ -223,66 +197,70 @@ The transition into a master's program presents significant challenges for incom
    Create a `.env.local` file in the root directory:
 
    ```env
-   # Application
-   NEXT_PUBLIC_APP_URL="http://localhost:3000"
-   NEXT_PUBLIC_APP_NAME="MSc EEE Transition Portal"
-
-   # Database
+   # Database (Supabase)
    DATABASE_URL="postgresql://user:password@host:5432/database"
+   DIRECT_URL="postgresql://user:password@host:5432/database"
 
    # NextAuth
    NEXTAUTH_URL="http://localhost:3000"
-   NEXTAUTH_SECRET="your-secret-here" # Generate: openssl rand -base64 32
+   NEXTAUTH_SECRET="your-secret-here"  # Generate with: openssl rand -base64 32
 
-   # Azure AD (Optional - for Microsoft integration)
+   # Azure AD (optional - pending NTU IT approval)
    AZURE_AD_CLIENT_ID=""
    AZURE_AD_CLIENT_SECRET=""
    AZURE_AD_TENANT_ID=""
-
-   # Microsoft Graph
-   MICROSOFT_GRAPH_API_ENDPOINT="https://graph.microsoft.com/v1.0"
    ```
 
-4. **Set up the database**
+4. **Run database migrations**
 
    ```bash
-   # Run database migrations
    npx prisma migrate dev --name init
+   ```
 
-   # Seed the database with sample data
+5. **Seed the database**
+
+   ```bash
    npx prisma db seed
    ```
 
-5. **Start the development server**
+6. **Start the development server**
 
    ```bash
    npm run dev
    ```
 
-6. **Open your browser**
+7. **Open the application**
 
    Navigate to [http://localhost:3000](http://localhost:3000)
 
+### Setting Up an Admin Account
+
+After seeding the database, open Prisma Studio to promote a user to admin:
+
+```bash
+npx prisma studio
+```
+
+Locate the user in the `users` table and set the `role` field to `admin`. The admin dashboard is accessible at `/admin`.
+
 ### Development on Mobile
 
-To test on your iPhone or other mobile devices:
+To test on a mobile device on the same network:
 
-1. **Find your computer's IP address**
+1. Find your machine's local IP address:
 
    ```bash
-   ipconfig getifaddr en0  # macOS/Linux
-   ipconfig  # Windows (look for IPv4 Address)
+   ipconfig getifaddr en0   # macOS
+   ipconfig                 # Windows
    ```
 
-2. **Start the dev server with network access**
+2. Start the development server with network access:
 
    ```bash
    npm run dev -- -H 0.0.0.0
    ```
 
-3. **Access from mobile**
-
-   Open `http://YOUR-IP-ADDRESS:3000` on your mobile device (ensure both devices are on the same network)
+3. Navigate to `http://YOUR-IP-ADDRESS:3000` on the mobile device.
 
 ---
 
@@ -290,41 +268,69 @@ To test on your iPhone or other mobile devices:
 
 ```
 msc-eee-transition-portal/
-├── app/                          # Next.js App Router
-│   ├── (auth)/                   # Authentication routes
-│   │   └── login/               # Login page
-│   ├── (dashboard)/             # Protected dashboard routes
-│   │   ├── dashboard/           # Main dashboard
-│   │   ├── calendar/            # Calendar module
-│   │   ├── community/           # Community module
-│   │   ├── student-life/        # Student life resources
-│   │   └── wellbeing/           # Well-being module
-│   ├── api/                     # API routes
-│   │   ├── auth/                # NextAuth endpoints
-│   │   ├── calendar/            # Calendar API
-│   │   ├── community/           # Community API (clubs, forums)
-│   │   ├── contact/             # Contact form API
-│   │   └── wellbeing/           # Well-being API
-│   └── layout.tsx               # Root layout
-├── components/                   # Reusable React components
-│   ├── Navbar.tsx               # Navigation bar
-│   └── ...                      # Other shared components
-├── lib/                         # Utility libraries
-│   ├── auth.ts                  # NextAuth configuration
-│   ├── prisma.ts                # Prisma client
-│   └── microsoft-graph.ts       # MS Graph API integration
-├── prisma/                      # Database
-│   ├── schema.prisma            # Database schema
-│   ├── seed.ts                  # Seed data script
-│   └── migrations/              # Database migrations
-├── public/                      # Static assets
-├── docs/                        # Documentation
-│   └── AZURE_INTEGRATION_PLAN.md  # Azure AD integration guide
-├── .env.local                   # Environment variables (not in git)
-├── next.config.js               # Next.js configuration
-├── tailwind.config.ts           # Tailwind CSS configuration
-├── tsconfig.json                # TypeScript configuration
-└── package.json                 # Project dependencies
+├── src/
+│   ├── app/
+│   │   ├── (auth)/                   # Authentication routes
+│   │   │   └── login/
+│   │   ├── (dashboard)/              # Protected student-facing routes
+│   │   │   ├── dashboard/
+│   │   │   ├── calendar/
+│   │   │   ├── community/
+│   │   │   │   └── clubs/[slug]/
+│   │   │   ├── student-life/
+│   │   │   │   ├── food-recos/
+│   │   │   │   ├── study-spots/
+│   │   │   │   └── getting-around/
+│   │   │   ├── wellbeing/
+│   │   │   │   ├── emotional/
+│   │   │   │   └── physical/
+│   │   │   └── contact/
+│   │   ├── admin/                    # Protected admin routes
+│   │   │   ├── events/
+│   │   │   ├── dining/
+│   │   │   ├── study-spots/
+│   │   │   ├── clubs/
+│   │   │   └── contacts/
+│   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   ├── calendar/events/
+│   │   │   ├── events/
+│   │   │   ├── contact/
+│   │   │   ├── student-life/
+│   │   │   │   ├── dining/
+│   │   │   │   └── study-spots/
+│   │   │   └── admin/
+│   │   │       ├── events/
+│   │   │       ├── dining/
+│   │   │       ├── study-spots/
+│   │   │       ├── clubs/
+│   │   │       └── contacts/
+│   │   └── layout.tsx
+│   ├── components/
+│   │   └── layout/
+│   │       ├── Navbar.tsx
+│   │       └── Footer.tsx
+│   ├── lib/
+│   │   ├── auth.ts
+│   │   └── prisma.ts
+│   ├── middleware.ts
+│   └── types/
+│       └── next-auth.d.ts
+├── prisma/
+│   ├── schema.prisma
+│   ├── seed.ts
+│   └── migrations/
+├── public/
+│   └── images/
+│       ├── events/
+│       ├── food/
+│       ├── study-spots/
+│       └── clubs/
+├── .env.local
+├── next.config.js
+├── tailwind.config.ts
+├── tsconfig.json
+└── package.json
 ```
 
 ---
@@ -333,36 +339,28 @@ msc-eee-transition-portal/
 
 ### Core Models
 
-- **User** - Student profiles and authentication
-- **Account** - OAuth account linking (NextAuth)
-- **Session** - User sessions (NextAuth)
-- **CalendarEvent** - Events and academic schedule
-- **Club** - Student clubs and organizations
-- **ClubMembership** - User-club relationships
-- **ForumPost** - Discussion forum posts
-- **ForumComment** - Post comments and replies
-- **DiningLocation** - Campus dining options
-- **StudySpot** - Study locations
-- **BusRoute** - Campus transportation
-- **WellbeingResource** - Mental health resources
-- **WellbeingLog** - Mood and wellness tracking
-- **Contact** - Contact form submissions
+| Model             | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| User              | Student profiles with role field (student/admin) |
+| Account           | OAuth account linking for NextAuth               |
+| Session           | User session management for NextAuth             |
+| CalendarEvent     | Per-user personal calendar events                |
+| Club              | EEE student clubs with social media fields       |
+| DiningLocation    | Campus dining options with cuisine and hours     |
+| StudySpot         | Study locations with capacity and amenities      |
+| WellbeingResource | Mental health and wellness resources             |
+| WellbeingLog      | Student mood and wellness tracking               |
+| Event             | Dashboard and community events                   |
+| Contact           | Contact form submissions with status tracking    |
 
-### Entity Relationship Overview
+### Key Relationships
 
 ```
-User ──┬── CalendarEvent (one-to-many)
-       ├── ClubMembership (one-to-many)
-       ├── ForumPost (one-to-many)
-       ├── ForumComment (one-to-many)
-       └── WellbeingLog (one-to-many)
-
-Club ──── ClubMembership (one-to-many)
-
-ForumPost ──── ForumComment (one-to-many)
+User ──── CalendarEvent (one-to-many, userId)
+User ──── WellbeingLog  (one-to-many, userId)
 ```
 
-For detailed schema, see `prisma/schema.prisma`
+For the complete schema, refer to `prisma/schema.prisma`.
 
 ---
 
@@ -370,154 +368,59 @@ For detailed schema, see `prisma/schema.prisma`
 
 ### Current Status
 
-The application is **architecturally ready** for Microsoft Azure Active Directory integration, which would enable:
+The application is architecturally prepared for Microsoft Azure Active Directory integration, which would enable Single Sign-On using NTU student credentials and Microsoft Outlook calendar synchronisation. The Azure AD provider in NextAuth.js is fully configured but commented out, pending approval from NTU IT Services.
 
-- Single Sign-On (SSO) with NTU credentials
-- Microsoft Outlook calendar synchronization
-- Access to Microsoft Graph API
+### Migration Path
 
-**Challenge:** Azure AD app registration requires approval from NTU IT Services due to institutional security policies. This approval process is outside the scope of the current development timeline.
+Once Azure AD credentials are issued, enabling the integration requires:
 
-**Solution:** A demonstration authentication system has been implemented that mirrors the Azure AD user experience while development continues.
+1. Uncommenting the `AzureADProvider` block in `src/lib/auth.ts`
+2. Adding the three Azure AD environment variables to the deployment configuration
+3. Updating the redirect URI in the Azure portal to match the production domain
+4. Enabling Microsoft Graph API scopes for calendar read and write access
 
-### Integration Architecture
-
-The codebase is fully prepared for Azure AD integration:
-
-- NextAuth.js Azure AD provider configured (commented out)
-- Microsoft Graph API client implemented
-- Calendar sync logic complete
-- Token refresh handling ready
-- Comprehensive documentation prepared
-
-**Migration Path:** Once Azure AD credentials are obtained, integration requires only:
-
-1. Uncommenting Azure AD provider in `lib/auth.ts`
-2. Adding environment variables
-3. Testing authentication flow
-
-**Estimated migration time:** 1-2 days
-
-### Documentation
-
-For complete Azure AD integration details, see:
-
-- `docs/AZURE_INTEGRATION_PLAN.md` - Comprehensive integration guide
-- `lib/auth.ts` - Authentication configuration
-- `lib/microsoft-graph.ts` - Graph API implementation
+Estimated migration time upon credential receipt is one to two days.
 
 ---
 
-## Screenshots
+## Scoping Decisions
 
-### Landing Page
+The following features were considered and deliberately excluded from the project scope:
 
-![Landing Page](docs/screenshots/landing-page.png)
-_Professional landing page with NTU branding and feature showcase_
+| Feature                | Reason for Exclusion                                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------------------- |
+| Forum System           | NTU student communities are already active on Reddit, Telegram, and WhatsApp; duplication adds no value |
+| Social Well-being page | Covered by the existing Community module (clubs and social media hub)                                   |
+| Bus route tracker      | The NTU Omnibus app provides real-time tracking; a static replication offers no improvement             |
+| Settings page          | No meaningful user-configurable settings exist within the current feature set                           |
+| Mood tracker           | Adds development complexity with limited practical utility for a short-tenure MSc programme             |
 
-### Dashboard
-
-![Dashboard](docs/screenshots/dashboard.png)
-_Central hub with events carousel and resource navigation_
-
-### Events Display
-
-![Events](docs/screenshots/events.png)
-_12 seeded events covering orientation, workshops, and wellness activities_
-
-### Community Module
-
-![Community](docs/screenshots/community.png)
-_Three-card carousel featuring clubs, forums, and social media_
-
-### Contact Form
-
-![Contact](docs/screenshots/contact-form.png)
-_Fully functional contact system with database backend_
+These decisions reflect a deliberate prioritisation of features with clear, immediate value for incoming MSc EEE students over completeness of the original specification.
 
 ---
 
 ## Future Development
 
-### Phase 1: Core Community Features (3-4 weeks)
+The following enhancements are recommended for a production deployment of this platform:
 
-- **Forum System** - Complete post/comment functionality
-- **Clubs Directory** - Full browse and membership features
-- **Calendar Integration** - If Azure AD approved
-
-### Phase 2: Enhanced Features (3-5 weeks)
-
-- **Student Life APIs** - Dining, transportation, study spots
-- **Well-being Module** - Resources and mood tracking
-- **Admin Panel** - Content and user management
-- **File Upload** - Image handling for posts/profiles
-- **Search** - Global search functionality
-
-### Phase 3: Optional Enhancements (Time Permitting)
-
-- Email notifications
-- In-app notification system
-- Advanced analytics
-- Real-time features (WebSockets)
-- PWA support
-
-### Excluded Features
-
-Based on time constraints and project scope:
-
-- ❌ Real-time chat (deferred to future phases)
-- ❌ Native mobile apps (focus on responsive web)
-- ❌ Gamification features (focus on core functionality)
-
----
-
-## Testing
-
-### Current Testing Setup
-
-- Manual testing on desktop (Chrome, Safari, Firefox)
-- Mobile testing on iPhone
-- API endpoint testing with sample data
-
-### Planned Testing
-
-- **Unit Tests** - Jest + React Testing Library
-- **Integration Tests** - Complete user workflows
-- **User Acceptance Testing** - 5-10 MSc EEE students
-- **Performance Testing** - Page load optimization
-- **Production Testing** - Staging environment validation
-
----
-
-## Deployment
-
-### Planned Production Environment
-
-- **Platform**: Vercel (Frontend + API Routes)
-- **Database**: Supabase PostgreSQL (Production instance)
-- **Monitoring**: Vercel Analytics + Error tracking
-- **Backups**: Automated daily database backups
-
-### Deployment Checklist
-
-- [ ] Environment variables configured in Vercel
-- [ ] Production database migrations run
-- [ ] Azure AD redirect URIs updated (when approved)
-- [ ] Performance optimization complete
-- [ ] Security audit passed
-- [ ] User documentation finalized
+- Azure AD SSO and Outlook calendar synchronisation upon IT approval
+- File upload support for event images and club profile pictures via cloud storage
+- Email notification system for contact form replies and event reminders
+- Progressive Web App support for mobile home screen installation
+- User acceptance testing with a cohort of incoming MSc EEE students
+- Analytics dashboard for administrators to track engagement across modules
 
 ---
 
 ## Academic Context
 
-This is a Final Year Project (FYP) for:
+This project is submitted as a Final Year Project for:
 
-- **Programme:** Information Engineering & Media, Year 4
+- **Programme:** Information Engineering and Media, Year 4
 - **Institution:** Nanyang Technological University
 - **Project Type:** Individual academic coursework
 
-**Academic Integrity Note:** This project adheres to NTU's academic integrity policies. All development is original work, and any AI assistance is properly managed to ensure no AI attribution in project submissions.
+**Academic Integrity Note:** This project adheres to NTU's academic integrity policies. All development is original work by the project developer.
 
 ---
 
@@ -527,41 +430,8 @@ This project is developed as academic coursework for Nanyang Technological Unive
 
 ---
 
-## Contact
-
-**Project Developer:** Robert
-**Institution:** Nanyang Technological University
-**Programme:** Year 4 Information Engineering & Media
-
-
----
-
 ## Acknowledgments
 
-- **Supervisor:** Prof Michelle Shao Xu Guang - Project guidance and feedback
-- **NTU IT Services** - Technical infrastructure support
-- **MSc EEE Programme** - Problem domain insights
-- **Open Source Community** - Amazing tools and frameworks
-
----
-
-## Additional Resources
-
-### Documentation
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
-- [NextAuth.js Documentation](https://next-auth.js.org)
-- [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/)
-
-### Project Documents
-
-- [Azure Integration Plan](docs/AZURE_INTEGRATION_PLAN.md)
-- [Interim Report](docs/INTERIM_REPORT.md)
-- [Presentation Slides](docs/PRESENTATION.pdf)
-
----
-
-**Last Updated:** February 2026
-**Version:** 0.6.0 (Development)
-**Status:** Active Development
+- **Supervisor:** Prof Michelle Shao Xu Guang — Project guidance and feedback
+- **NTU School of EEE** — Problem domain support and resource access
+- **NTU IT Services** — Technical infrastructure and institutional guidance
