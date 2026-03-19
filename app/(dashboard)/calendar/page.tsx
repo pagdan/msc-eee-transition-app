@@ -12,6 +12,8 @@ import {
   Clock,
   Info,
 } from "lucide-react";
+import Link from "next/link";
+import Footer from "@/components/layout/Footer";
 
 interface CalendarEvent {
   id: string;
@@ -22,6 +24,14 @@ interface CalendarEvent {
   endTime: string;
   isAllDay: boolean;
   category?: string | null;
+}
+
+interface DashboardEvent {
+  id: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  imageUrl?: string;
 }
 
 const CATEGORIES = [
@@ -90,9 +100,12 @@ export default function CalendarPage() {
   const [showDayPanel, setShowDayPanel] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState<string | null>(null);
+  const [dashboardEvents, setDashboardEvents] = useState<DashboardEvent[]>([]);
+  const [loadingDashboardEvents, setLoadingDashboardEvents] = useState(true);
 
   useEffect(() => {
     fetchEvents();
+    fetchDashboardEvents();
   }, []);
 
   async function fetchEvents() {
@@ -107,30 +120,33 @@ export default function CalendarPage() {
     setLoading(false);
   }
 
-  // ── Calendar helpers ──────────────────────────────────────────────────────
+  async function fetchDashboardEvents() {
+    try {
+      const res = await fetch("/api/events?limit=12");
+      const data = await res.json();
+      if (data.success) setDashboardEvents(data.data);
+    } catch {
+      // fail silently
+    }
+    setLoadingDashboardEvents(false);
+  }
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-  // Build grid: 6 rows × 7 cols
   const calendarDays: { date: Date; isCurrentMonth: boolean }[] = [];
-
-  // Previous month padding
   for (let i = firstDayOfMonth - 1; i >= 0; i--) {
     calendarDays.push({
       date: new Date(year, month - 1, daysInPrevMonth - i),
       isCurrentMonth: false,
     });
   }
-  // Current month
   for (let d = 1; d <= daysInMonth; d++) {
     calendarDays.push({ date: new Date(year, month, d), isCurrentMonth: true });
   }
-  // Next month padding
   const remaining = 42 - calendarDays.length;
   for (let d = 1; d <= remaining; d++) {
     calendarDays.push({
@@ -176,18 +192,14 @@ export default function CalendarPage() {
   function prevMonth() {
     setCurrentDate(new Date(year, month - 1, 1));
   }
-
   function nextMonth() {
     setCurrentDate(new Date(year, month + 1, 1));
   }
-
   function goToToday() {
     setCurrentDate(new Date());
     setSelectedDate(new Date());
     setShowDayPanel(true);
   }
-
-  // ── Upcoming events (next 7 days) ─────────────────────────────────────────
 
   const upcoming = events
     .filter((e) => {
@@ -198,8 +210,6 @@ export default function CalendarPage() {
       return d >= now && d <= in7;
     })
     .slice(0, 5);
-
-  // ── Form ─────────────────────────────────────────────────────────────────
 
   function openAddForm(date?: Date) {
     const d = date ?? selectedDate ?? new Date();
@@ -219,23 +229,19 @@ export default function CalendarPage() {
       setError("Title and date are required.");
       return;
     }
-
     setSaving(true);
     setError(null);
-
     const startTime = form.isAllDay
       ? new Date(`${form.date}T00:00:00`)
       : new Date(`${form.date}T${form.startTime}:00`);
     const endTime = form.isAllDay
       ? new Date(`${form.date}T23:59:59`)
       : new Date(`${form.date}T${form.endTime}:00`);
-
     if (endTime <= startTime && !form.isAllDay) {
       setError("End time must be after start time.");
       setSaving(false);
       return;
     }
-
     const res = await fetch("/api/calendar/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -249,14 +255,12 @@ export default function CalendarPage() {
         category: form.category,
       }),
     });
-
     if (res.ok) {
       await fetchEvents();
       closeForm();
     } else {
       setError("Something went wrong. Please try again.");
     }
-
     setSaving(false);
   }
 
@@ -271,8 +275,6 @@ export default function CalendarPage() {
     await fetchEvents();
     setDeleting(null);
   }
-
-  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -294,22 +296,10 @@ export default function CalendarPage() {
           </button>
         </div>
 
-        {/* Azure AD notice */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-start gap-3 mb-6">
-          <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-blue-700 leading-relaxed">
-            <span className="font-semibold">Outlook sync unavailable.</span>{" "}
-            Integration with NTU Microsoft Outlook is pending approval from NTU
-            IT Services. In the meantime, you can add and manage your events
-            manually below.
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* ── Main Calendar Grid ── */}
+          {/* Main Calendar Grid */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              {/* Month navigation */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <div className="flex items-center gap-3">
                   <button
@@ -336,7 +326,6 @@ export default function CalendarPage() {
                 </button>
               </div>
 
-              {/* Day headers */}
               <div className="grid grid-cols-7 border-b border-gray-100">
                 {DAYS_OF_WEEK.map((d) => (
                   <div
@@ -348,7 +337,6 @@ export default function CalendarPage() {
                 ))}
               </div>
 
-              {/* Calendar grid */}
               {loading ? (
                 <div className="flex items-center justify-center py-20">
                   <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
@@ -359,25 +347,15 @@ export default function CalendarPage() {
                     const dayEvents = getEventsForDate(date);
                     const today = isToday(date);
                     const selected = isSelected(date);
-
                     return (
                       <div
                         key={i}
                         onClick={() => handleDayClick(date)}
-                        className={`min-h-[90px] p-2 border-b border-r border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 ${
-                          !isCurrentMonth ? "bg-gray-50/50" : ""
-                        } ${selected ? "bg-red-50/60" : ""}`}
+                        className={`min-h-[90px] p-2 border-b border-r border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 ${!isCurrentMonth ? "bg-gray-50/50" : ""} ${selected ? "bg-red-50/60" : ""}`}
                       >
-                        {/* Date number */}
                         <div className="flex items-center justify-between mb-1">
                           <span
-                            className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full ${
-                              today
-                                ? "bg-[#D7143F] text-white font-bold"
-                                : isCurrentMonth
-                                  ? "text-gray-800"
-                                  : "text-gray-300"
-                            }`}
+                            className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full ${today ? "bg-[#D7143F] text-white font-bold" : isCurrentMonth ? "text-gray-800" : "text-gray-300"}`}
                           >
                             {date.getDate()}
                           </span>
@@ -387,22 +365,17 @@ export default function CalendarPage() {
                                 e.stopPropagation();
                                 openAddForm(date);
                               }}
-                              className="opacity-0 hover:opacity-100 group-hover:opacity-100 p-0.5 hover:bg-gray-200 rounded transition-opacity"
+                              className="opacity-0 hover:opacity-100 p-0.5 hover:bg-gray-200 rounded transition-opacity"
                             >
                               <Plus className="w-3 h-3 text-gray-400" />
                             </button>
                           )}
                         </div>
-
-                        {/* Event pills */}
                         <div className="space-y-0.5">
                           {dayEvents.slice(0, 3).map((event) => (
                             <div
                               key={event.id}
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-medium truncate ${
-                                CATEGORY_PILL[event.category ?? ""] ??
-                                "bg-gray-200 text-gray-700"
-                              }`}
+                              className={`text-[10px] px-1.5 py-0.5 rounded font-medium truncate ${CATEGORY_PILL[event.category ?? ""] ?? "bg-gray-200 text-gray-700"}`}
                             >
                               {event.title}
                             </div>
@@ -433,9 +406,8 @@ export default function CalendarPage() {
             </div>
           </div>
 
-          {/* ── Right Panel ── */}
+          {/* Right Panel */}
           <div className="space-y-4">
-            {/* Selected day events */}
             {showDayPanel && selectedDate && (
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
@@ -454,7 +426,6 @@ export default function CalendarPage() {
                     <Plus className="w-3.5 h-3.5" />
                   </button>
                 </div>
-
                 <div className="p-3">
                   {getEventsForDate(selectedDate).length === 0 ? (
                     <div className="text-center py-6">
@@ -483,7 +454,6 @@ export default function CalendarPage() {
               </div>
             )}
 
-            {/* Upcoming events */}
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-100">
                 <p className="text-sm font-semibold text-gray-900">
@@ -536,9 +506,36 @@ export default function CalendarPage() {
             </div>
           </div>
         </div>
+
+        {/* Upcoming NTU Events Section */}
+        <section className="py-16 border-t border-gray-200 mt-8">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-[#181D62] mb-2">
+              Upcoming Events
+            </h2>
+            <p className="text-gray-600">
+              Stay connected with the latest happenings in the MSc EEE community
+            </p>
+          </div>
+          {loadingDashboardEvents ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {dashboardEvents.map((event) => (
+                <NTUEventCard
+                  key={event.id}
+                  event={event}
+                  onAdded={fetchEvents}
+                />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
 
-      {/* ── Add Event Modal ── */}
+      {/* Add Event Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40" onClick={closeForm} />
@@ -552,14 +549,12 @@ export default function CalendarPage() {
                 <X className="w-4 h-4" />
               </button>
             </div>
-
             <div className="px-6 py-5 space-y-4">
               {error && (
                 <div className="bg-red-50 text-red-600 text-sm px-4 py-2.5 rounded-lg">
                   {error}
                 </div>
               )}
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Title <span className="text-red-500">*</span>
@@ -573,7 +568,6 @@ export default function CalendarPage() {
                   autoFocus
                 />
               </div>
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Category
@@ -583,18 +577,13 @@ export default function CalendarPage() {
                     <button
                       key={c.value}
                       onClick={() => setForm({ ...form, category: c.value })}
-                      className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                        form.category === c.value
-                          ? c.color
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${form.category === c.value ? c.color : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
                     >
                       {c.label}
                     </button>
                   ))}
                 </div>
               </div>
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Date <span className="text-red-500">*</span>
@@ -606,7 +595,6 @@ export default function CalendarPage() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D7143F]"
                 />
               </div>
-
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -621,7 +609,6 @@ export default function CalendarPage() {
                   All day event
                 </label>
               </div>
-
               {!form.isAllDay && (
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -652,7 +639,6 @@ export default function CalendarPage() {
                   </div>
                 </div>
               )}
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Location
@@ -667,7 +653,6 @@ export default function CalendarPage() {
                   placeholder="e.g. S2-B2a-30"
                 />
               </div>
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Description
@@ -683,7 +668,6 @@ export default function CalendarPage() {
                 />
               </div>
             </div>
-
             <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
               <button
                 onClick={closeForm}
@@ -703,11 +687,13 @@ export default function CalendarPage() {
           </div>
         </div>
       )}
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
 
-// ── Day Event Card ────────────────────────────────────────────────────────────
+// ── Day Event Card ─────────────────────────────────────────────────────────────
 
 function DayEventCard({
   event,
@@ -767,6 +753,143 @@ function DayEventCard({
             <X className="w-3.5 h-3.5" />
           )}
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ── NTU Event Card ─────────────────────────────────────────────────────────────
+
+function NTUEventCard({
+  event,
+  onAdded,
+}: {
+  event: DashboardEvent;
+  onAdded: () => void;
+}) {
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCalendar = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (adding || added) return;
+    setAdding(true);
+    const eventDate = new Date(event.date);
+    const startTime = new Date(eventDate);
+    startTime.setHours(9, 0, 0, 0);
+    const endTime = new Date(eventDate);
+    endTime.setHours(10, 0, 0, 0);
+    try {
+      const res = await fetch("/api/calendar/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: event.title,
+          description: event.subtitle,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          isAllDay: false,
+          category: "social",
+        }),
+      });
+      if (res.ok) {
+        setAdded(true);
+        onAdded();
+        setTimeout(() => setAdded(false), 3000);
+      } else {
+        alert("Failed to add to calendar. Please try again.");
+      }
+    } catch {
+      alert("Something went wrong. Please try again.");
+    }
+    setAdding(false);
+  };
+
+  return (
+    <div className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
+      <div className="relative h-48 bg-gradient-to-br from-[#D7143F] to-[#181D62] overflow-hidden">
+        {event.imageUrl ? (
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <CalendarDays className="w-16 h-16 text-white opacity-50" />
+          </div>
+        )}
+        <div className="absolute top-4 left-4 bg-white rounded-lg px-3 py-2 shadow-lg">
+          <div className="text-[#D7143F] font-bold text-lg">
+            {new Date(event.date).getDate()}
+          </div>
+          <div className="text-gray-600 text-xs font-medium">
+            {new Date(event.date).toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-bold text-lg text-[#181D62] mb-2 line-clamp-2 group-hover:text-[#D7143F] transition-colors">
+          {event.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+          {event.subtitle}
+        </p>
+        <div className="flex gap-2 mt-auto">
+          <Link
+            href={`/events/${event.id}`}
+            className="flex-1 px-4 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#B01030] transition-colors text-center text-sm font-medium"
+          >
+            Learn More
+          </Link>
+          <button
+            onClick={handleAddToCalendar}
+            disabled={adding || added}
+            className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center ${added ? "bg-green-100 text-green-600" : "bg-[#D9D9D9] text-[#181D62] hover:bg-[#181D62] hover:text-white"}`}
+            title={added ? "Added to calendar!" : "Add to calendar"}
+          >
+            {adding ? (
+              <svg
+                className="w-5 h-5 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                />
+              </svg>
+            ) : added ? (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            ) : (
+              <Plus className="w-5 h-5" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
