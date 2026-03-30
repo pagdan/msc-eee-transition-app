@@ -309,12 +309,12 @@ export default function EmotionalWellbeingPage() {
               {
                 label: "First Stop for Mental Health",
                 desc: "A clear, 'no wrong door' support for individuals in mental distress or crisis.",
-                href: "https://www.ntu.edu.sg/student-life/student-wellbeing",
+                href: "https://mindline.sg/fsmh",
               },
               {
                 label: "CREST",
-                desc: "Community mental health teams operated by social service agencies to provide psycho-social support services.",
-                href: "https://mindline.sg/mental-health-service-providers/browse?category=all&view=list",
+                desc: "Listens to your concerns and provides support such as therapy, as your in-person First Stop for Mental Health.",
+                href: "https://supportgowhere.life.gov.sg/services/SVC-COTC/community-outreach-teams-crest",
               },
               {
                 label: "Samaritans of Singapore (SOS)",

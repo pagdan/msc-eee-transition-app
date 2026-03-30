@@ -85,18 +85,28 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-[#181D62] to-[#D7143F] text-white py-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
-          <div className="absolute bottom-10 right-10 w-48 h-48 border-4 border-white rounded-full"></div>
-        </div>
+      <section
+        className="relative text-white overflow-hidden"
+        style={{ minHeight: "480px" }}
+      >
+        {/* Background Image */}
+        <img
+          src="/images/community.jpg"
+          alt="MSc EEE Students at NTU"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">Community</h1>
-            <p className="text-xl text-white/90 mb-8">
-              Hang out with your fellow students, share ideas, and collaborate
-              on projects.
+        {/* Subtle dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-l from-[#181D62]/85 via-[#181D62]/40 to-transparent" />
+
+        {/* Content — top-right */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex justify-end">
+          <div className="max-w-md text-right">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4 leading-tight drop-shadow-lg">
+              Community
+            </h1>
+            <p className="text-xl text-white/90 mb-8 drop-shadow">
+              Check out our EEE clubs and follow us on social media!
             </p>
           </div>
         </div>
@@ -109,9 +119,8 @@ export default function HomePage() {
             Resources
           </h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Explore the MSC EEE community resources designed to support your
-            academic journey. From study materials to networking opportunities,
-            we have everything you need to succeed.
+            Explore the MSC EEE community resources designed to keep you
+            connected and informed.
           </p>
 
           {/* Carousel Container */}
