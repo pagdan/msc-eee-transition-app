@@ -162,13 +162,13 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
                         </span>
                       )}
                     </div>
-                    <button
+                    {/*<button
                       className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                       onClick={() => setProfileMenuOpen(false)}
                     >
                       <Settings className="w-4 h-4" />
                       <span>Settings</span>
-                    </button>
+                    </button>*/}
                     {isAdmin && (
                       <Link
                         href="/admin"
