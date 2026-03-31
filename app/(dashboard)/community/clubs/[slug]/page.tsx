@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  Users,
-  Mail,
-  Globe,
-  ArrowLeft,
-  Calendar,
-  MessageSquare,
-} from "lucide-react";
+import { Users, Mail, Globe, ArrowLeft } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 
 interface Club {
@@ -143,7 +136,7 @@ export default function ClubDetailPage() {
               </div>
             </div>
 
-            {/* Join Button */}
+            {/* Join Button
             <div className="md:ml-auto">
               <button
                 onClick={handleJoinLeave}
@@ -156,6 +149,7 @@ export default function ClubDetailPage() {
                 {isJoined ? "Leave Club" : "Join Club"}
               </button>
             </div>
+            */}
           </div>
         </div>
       </div>
@@ -173,43 +167,6 @@ export default function ClubDetailPage() {
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {club.description}
               </p>
-            </div>
-
-            {/* Activities (Placeholder) */}
-            <div className="bg-white rounded-xl shadow-md p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Recent Activities
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-[#D7143F] mt-1 flex-shrink-0" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      Upcoming Workshop
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Details about upcoming club activities will appear here.
-                    </p>
-                    <span className="text-xs text-gray-500 mt-2 block">
-                      Coming soon
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                  <MessageSquare className="w-5 h-5 text-[#D7143F] mt-1 flex-shrink-0" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      Latest Discussion
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Club discussions and announcements will be displayed here.
-                    </p>
-                    <span className="text-xs text-gray-500 mt-2 block">
-                      Coming soon
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -253,27 +210,6 @@ export default function ClubDetailPage() {
                     </div>
                   </a>
                 )}
-              </div>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                Quick Stats
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-sm text-gray-600">Total Members</div>
-                  <div className="text-2xl font-bold text-[#D7143F]">
-                    {club.memberCount}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600">Category</div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    {club.category}
-                  </div>
-                </div>
               </div>
             </div>
           </div>

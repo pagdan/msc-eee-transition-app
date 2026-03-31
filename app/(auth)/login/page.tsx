@@ -105,7 +105,7 @@ export default function LoginPage() {
           <div className="mt-8 pt-6 border-t border-gray-100 text-center">
             <p className="text-sm text-gray-600 mb-2">Need help signing in?</p>
             <a
-              href="mailto:eee-go@ntu.edu.sg"
+              href="mailto:eee_msc@ntu.edu.sg"
               className="text-sm text-blue-600 hover:text-blue-700 font-medium"
             >
               Contact Support

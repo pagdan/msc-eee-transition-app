@@ -13,13 +13,11 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to dashboard if logged in
     if (status === "authenticated") {
       router.push("/dashboard");
     }
   }, [status, router]);
 
-  // Show loading while checking auth
   if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -28,24 +26,20 @@ export default function HomePage() {
     );
   }
 
-  // Show landing page for non-authenticated users
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Header - Simple version for non-authenticated users */}
+      {/* Header */}
       <header className="bg-[#D9D9D9] shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
             <Link
               href="/"
               className="flex items-center space-x-4 hover:opacity-80 transition-opacity"
             >
               <div className="flex items-center space-x-2">
-                {/* NTU Logo */}
                 <div className="w-10 h-10 bg-[#181D62] rounded flex items-center justify-center">
                   <span className="text-white font-bold text-sm">NTU</span>
                 </div>
-                {/* MSc EEE Logo */}
                 <div className="hidden sm:block">
                   <div className="text-sm font-bold text-[#181D62]">MSc</div>
                   <div className="text-sm font-bold text-[#D7143F]">EEE</div>
@@ -53,7 +47,6 @@ export default function HomePage() {
               </div>
             </Link>
 
-            {/* Sign In Button */}
             <Link
               href="/login"
               className="px-4 py-2 bg-[#D7143F] text-white rounded-lg hover:bg-[#B81136] transition-colors font-medium"
@@ -64,16 +57,27 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome to Your MSc EEE Journey
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Your comprehensive platform for navigating academic life, building
-            connections, and thriving at Nanyang Technological University
-          </p>
+        {/* Hero Section with background image */}
+        <div className="relative w-full h-[500px] mb-16 rounded-2xl overflow-hidden shadow-lg">
+          {/* Background image — swap src for any preferred NTU campus photo */}
+          <img
+            src="images/landingpage.jpg"
+            alt="NTU Campus"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Navy overlay for readability */}
+          <div className="absolute inset-0 bg-[#181D62]/70" />
+          {/* Centred text */}
+          <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow">
+              Welcome to Your MSc EEE Journey
+            </h2>
+            <p className="text-xl text-white/85 max-w-3xl mx-auto drop-shadow">
+              Your comprehensive platform for navigating academic life, building
+              connections, and thriving at Nanyang Technological University
+            </p>
+          </div>
         </div>
 
         {/* Features Grid */}
@@ -81,19 +85,19 @@ export default function HomePage() {
           <FeatureCard
             icon={<Calendar className="w-8 h-8 text-blue-600" />}
             title="Calendar"
-            description="Sync your academic timetable and never miss important events with Microsoft Outlook integration"
+            description="Plan your academic timetable and never miss important events"
             href="/login"
           />
           <FeatureCard
             icon={<Users className="w-8 h-8 text-green-600" />}
             title="Community"
-            description="Join clubs, participate in forums, and connect with fellow MSc EEE students"
+            description="Browse clubs, follow our social media, and connect with fellow MSc EEE students"
             href="/login"
           />
           <FeatureCard
             icon={<MapPin className="w-8 h-8 text-orange-600" />}
             title="Student Life"
-            description="Discover dining spots, campus bus routes, and the best study locations"
+            description="Discover dining spots and the best study locations on campus."
             href="/login"
           />
           <FeatureCard
@@ -122,7 +126,6 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
