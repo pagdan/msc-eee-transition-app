@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
         }),
       },
       orderBy: {
-        date: "desc",
+        date: upcoming ? "asc" : "desc",
       },
       ...(limit && { take: parseInt(limit) }),
     });

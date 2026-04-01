@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Calendar, MapPin, ArrowLeft, Plus } from "lucide-react";
+import { Calendar, ArrowLeft, Plus } from "lucide-react";
 import { format } from "date-fns";
 import Footer from "@/components/layout/Footer";
 
@@ -44,15 +44,14 @@ export default function EventDetailPage() {
 
   const handleAddToCalendar = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (adding || added) return;
-
+    if (adding || added || !event) return;
     setAdding(true);
 
     const eventDate = new Date(event.date);
     const startTime = new Date(eventDate);
-    startTime.setHours(9, 0, 0, 0); // default 9am
+    startTime.setHours(9, 0, 0, 0);
     const endTime = new Date(eventDate);
-    endTime.setHours(10, 0, 0, 0); // default 10am
+    endTime.setHours(10, 0, 0, 0);
 
     try {
       const res = await fetch("/api/calendar/events", {
@@ -70,7 +69,6 @@ export default function EventDetailPage() {
 
       if (res.ok) {
         setAdded(true);
-        // Reset after 3 seconds
         setTimeout(() => setAdded(false), 3000);
       } else {
         alert("Failed to add event to calendar. Please try again.");
@@ -107,6 +105,8 @@ export default function EventDetailPage() {
       </div>
     );
   }
+
+  const isPast = new Date(event.date) < new Date();
 
   return (
     <div className="min-h-screen bg-white">
@@ -152,63 +152,64 @@ export default function EventDetailPage() {
           <h1 className="text-4xl font-bold text-[#181D62] mb-4">
             {event.title}
           </h1>
-
           <p className="text-xl text-gray-600 mb-6">{event.subtitle}</p>
 
-          <button
-            onClick={handleAddToCalendar}
-            disabled={adding || added}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
-              added
-                ? "bg-green-500 text-white"
-                : "bg-[#D7143F] text-white hover:bg-[#B01030]"
-            }`}
-          >
-            {adding ? (
-              <svg
-                className="w-5 h-5 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
+          {!isPast && (
+            <button
+              onClick={handleAddToCalendar}
+              disabled={adding || added}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+                added
+                  ? "bg-green-500 text-white"
+                  : "bg-[#D7143F] text-white hover:bg-[#B01030]"
+              }`}
+            >
+              {adding ? (
+                <svg
+                  className="w-5 h-5 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+              ) : added ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
                   stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                />
-              </svg>
-            ) : added ? (
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            ) : (
-              <Plus className="w-5 h-5" />
-            )}
-            <span>
-              {adding
-                ? "Adding..."
-                : added
-                  ? "Added to Calendar!"
-                  : "Add to Calendar"}
-            </span>
-          </button>
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              ) : (
+                <Plus className="w-5 h-5" />
+              )}
+              <span>
+                {adding
+                  ? "Adding..."
+                  : added
+                    ? "Added to Calendar!"
+                    : "Add to Calendar"}
+              </span>
+            </button>
+          )}
         </div>
 
         {/* Event Description */}

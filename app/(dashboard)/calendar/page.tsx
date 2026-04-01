@@ -100,7 +100,8 @@ export default function CalendarPage() {
   const [showDayPanel, setShowDayPanel] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState<string | null>(null);
-  const [dashboardEvents, setDashboardEvents] = useState<DashboardEvent[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<DashboardEvent[]>([]);
+  const [pastEvents, setPastEvents] = useState<DashboardEvent[]>([]);
   const [loadingDashboardEvents, setLoadingDashboardEvents] = useState(true);
 
   useEffect(() => {
@@ -122,9 +123,22 @@ export default function CalendarPage() {
 
   async function fetchDashboardEvents() {
     try {
-      const res = await fetch("/api/events?limit=12");
-      const data = await res.json();
-      if (data.success) setDashboardEvents(data.data);
+      const [upcomingRes, pastRes] = await Promise.all([
+        fetch("/api/events?upcoming=true"),
+        fetch("/api/events?limit=12"),
+      ]);
+      const upcomingData = await upcomingRes.json();
+      const pastData = await pastRes.json();
+
+      if (upcomingData.success) setUpcomingEvents(upcomingData.data);
+      if (pastData.success) {
+        const upcomingIds = new Set(
+          upcomingData.data?.map((e: DashboardEvent) => e.id) ?? [],
+        );
+        setPastEvents(
+          pastData.data.filter((e: DashboardEvent) => !upcomingIds.has(e.id)),
+        );
+      }
     } catch {
       // fail silently
     }
@@ -507,32 +521,66 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        {/* Upcoming NTU Events Section */}
-        <section className="py-16 border-t border-gray-200 mt-8">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-[#181D62] mb-2">
-              Upcoming Events
-            </h2>
-            <p className="text-gray-600">
-              Stay connected with the latest happenings in the MSc EEE community
-            </p>
-          </div>
+        {/* NTU Events Section */}
+        <div className="mt-16 border-t border-gray-200 pt-16">
           {loadingDashboardEvents ? (
             <div className="flex justify-center items-center py-12">
-              <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-4 border-[#D7143F] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {dashboardEvents.map((event) => (
-                <NTUEventCard
-                  key={event.id}
-                  event={event}
-                  onAdded={fetchEvents}
-                />
-              ))}
-            </div>
+            <>
+              {/* Upcoming NTU Events */}
+              {upcomingEvents.length > 0 && (
+                <div className="mb-16">
+                  <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-[#181D62] mb-2">
+                      Upcoming Events
+                    </h2>
+                    <p className="text-gray-600">
+                      Stay connected with the latest happenings in the MSc EEE
+                      community
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {upcomingEvents.map((event) => (
+                      <NTUEventCard
+                        key={event.id}
+                        event={event}
+                        isPast={false}
+                        onAdded={fetchEvents}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Past NTU Events */}
+              {pastEvents.length > 0 && (
+                <div>
+                  <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-[#181D62] mb-2">
+                      {upcomingEvents.length > 0
+                        ? "Past Events"
+                        : "Recent Events"}
+                    </h2>
+                    <p className="text-gray-600">
+                      A look back at recent MSc EEE community events
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {pastEvents.map((event) => (
+                      <NTUEventCard
+                        key={event.id}
+                        event={event}
+                        isPast={true}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
-        </section>
+        </div>
       </div>
 
       {/* Add Event Modal */}
@@ -687,13 +735,11 @@ export default function CalendarPage() {
           </div>
         </div>
       )}
-      {/* Footer */}
+
       <Footer />
     </div>
   );
 }
-
-// ── Day Event Card ─────────────────────────────────────────────────────────────
 
 function DayEventCard({
   event,
@@ -705,7 +751,7 @@ function DayEventCard({
   deleting: string | null;
 }) {
   return (
-    <div className="bg-gray-50 rounded-lg p-3 group relative">
+    <div className="bg-gray-50 rounded-lg p-3">
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
@@ -758,14 +804,14 @@ function DayEventCard({
   );
 }
 
-// ── NTU Event Card ─────────────────────────────────────────────────────────────
-
 function NTUEventCard({
   event,
+  isPast = false,
   onAdded,
 }: {
   event: DashboardEvent;
-  onAdded: () => void;
+  isPast?: boolean;
+  onAdded?: () => void;
 }) {
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
@@ -794,7 +840,7 @@ function NTUEventCard({
       });
       if (res.ok) {
         setAdded(true);
-        onAdded();
+        onAdded?.();
         setTimeout(() => setAdded(false), 3000);
       } else {
         alert("Failed to add to calendar. Please try again.");
@@ -845,50 +891,52 @@ function NTUEventCard({
           >
             Learn More
           </Link>
-          <button
-            onClick={handleAddToCalendar}
-            disabled={adding || added}
-            className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center ${added ? "bg-green-100 text-green-600" : "bg-[#D9D9D9] text-[#181D62] hover:bg-[#181D62] hover:text-white"}`}
-            title={added ? "Added to calendar!" : "Add to calendar"}
-          >
-            {adding ? (
-              <svg
-                className="w-5 h-5 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
+          {!isPast && (
+            <button
+              onClick={handleAddToCalendar}
+              disabled={adding || added}
+              className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center ${added ? "bg-green-100 text-green-600" : "bg-[#D9D9D9] text-[#181D62] hover:bg-[#181D62] hover:text-white"}`}
+              title={added ? "Added to calendar!" : "Add to calendar"}
+            >
+              {adding ? (
+                <svg
+                  className="w-5 h-5 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+              ) : added ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
                   stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                />
-              </svg>
-            ) : added ? (
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            ) : (
-              <Plus className="w-5 h-5" />
-            )}
-          </button>
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              ) : (
+                <Plus className="w-5 h-5" />
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>
