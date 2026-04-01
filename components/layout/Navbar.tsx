@@ -10,39 +10,88 @@ import {
   Heart,
   Menu,
   X,
-  Search,
   LogOut,
-  Settings,
   User,
   LayoutDashboard,
+  ChevronDown,
+  Instagram,
+  UtensilsCrossed,
+  BookOpen,
+  Bus,
+  Smile,
+  Dumbbell,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-const navigation = [
+// Items without dropdowns
+const SIMPLE_NAV = [
   { name: "Calendar", href: "/calendar", icon: Calendar },
-  { name: "Community", href: "/community", icon: Users },
-  { name: "Student Life", href: "/student-life", icon: MapPin },
-  { name: "Wellbeing", href: "/wellbeing", icon: Heart },
+  { name: "Contact Us", href: "/contact", icon: null },
+];
+
+// Items with dropdowns
+const DROPDOWN_NAV = [
   {
-    name: "Contact Us",
-    href: "/contact",
-    icon: () => (
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
-    ),
+    name: "Community",
+    href: "/community",
+    icon: Users,
+    children: [
+      { name: "Clubs", href: "/community/clubs", icon: Users },
+      {
+        name: "Social Media",
+        href: "/community/social",
+        icon: Instagram,
+      },
+    ],
+  },
+  {
+    name: "Student Life",
+    href: "/student-life",
+    icon: MapPin,
+    children: [
+      {
+        name: "Food Recommendations",
+        href: "/student-life/food-recos",
+        icon: UtensilsCrossed,
+      },
+      {
+        name: "Study Spots",
+        href: "/student-life/study-spots",
+        icon: BookOpen,
+      },
+      {
+        name: "Getting Around",
+        href: "/student-life/getting-around",
+        icon: Bus,
+      },
+    ],
+  },
+  {
+    name: "Wellbeing",
+    href: "/wellbeing",
+    icon: Heart,
+    children: [
+      { name: "Emotional", href: "/wellbeing/emotional", icon: Smile },
+      { name: "Physical", href: "/wellbeing/physical", icon: Dumbbell },
+    ],
   },
 ];
+
+const ContactIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+    />
+  </svg>
+);
 
 interface NavbarProps {
   userEmail?: string | null;
@@ -54,7 +103,24 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const isAdmin = userRole === "admin";
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpenDropdown(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/" });
@@ -64,17 +130,15 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
     <header className="bg-[#D9D9D9] shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Left: Logos */}
+          {/* Left: Logo */}
           <Link
             href="/dashboard"
             className="flex items-center space-x-4 hover:opacity-80 transition-opacity"
           >
             <div className="flex items-center space-x-2">
-              {/* NTU Logo */}
               <div className="w-10 h-10 bg-[#181D62] rounded flex items-center justify-center">
                 <span className="text-white font-bold text-sm">NTU</span>
               </div>
-              {/* MSc EEE Logo */}
               <div className="hidden sm:block">
                 <div className="text-sm font-bold text-[#181D62]">MSc</div>
                 <div className="text-sm font-bold text-[#D7143F]">EEE</div>
@@ -83,28 +147,96 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
           </Link>
 
           {/* Center: Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
+          <nav
+            className="hidden md:flex items-center space-x-1"
+            ref={dropdownRef}
+          >
+            {/* Calendar */}
+            <Link
+              href="/calendar"
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                pathname === "/calendar"
+                  ? "bg-white text-[#D7143F]"
+                  : "text-[#181D62] hover:bg-white/50"
+              }`}
+            >
+              <Calendar className="w-5 h-5" />
+              <span className="font-medium">Calendar</span>
+            </Link>
+
+            {/* Dropdown items */}
+            {DROPDOWN_NAV.map((item) => {
+              const isActive = pathname.startsWith(item.href);
+              const isOpen = openDropdown === item.name;
               const IconComponent = item.icon;
 
               return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-white text-[#D7143F]"
-                      : "text-[#181D62] hover:bg-white/50"
-                  }`}
-                >
-                  <IconComponent className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
-                </Link>
+                <div key={item.name} className="relative">
+                  <button
+                    onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                      isActive
+                        ? "bg-white text-[#D7143F]"
+                        : "text-[#181D62] hover:bg-white/50"
+                    }`}
+                  >
+                    <IconComponent className="w-5 h-5" />
+                    <span className="font-medium">{item.name}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {/* Dropdown menu */}
+                  {isOpen && (
+                    <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-200 py-1.5 z-30">
+                      {/* Link to parent page */}
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpenDropdown(null)}
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 border-b border-gray-100"
+                      >
+                        <span>All {item.name}</span>
+                      </Link>
+                      {item.children.map((child) => {
+                        const ChildIcon = child.icon;
+                        const childActive = pathname === child.href;
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setOpenDropdown(null)}
+                            className={`flex items-center space-x-3 px-4 py-2.5 text-sm transition-colors ${
+                              childActive
+                                ? "text-[#D7143F] bg-red-50 font-medium"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <ChildIcon className="w-4 h-4 flex-shrink-0" />
+                            <span>{child.name}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
 
-            {/* Admin link — only visible to admins */}
+            {/* Contact Us */}
+            <Link
+              href="/contact"
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                pathname === "/contact"
+                  ? "bg-white text-[#D7143F]"
+                  : "text-[#181D62] hover:bg-white/50"
+              }`}
+            >
+              <ContactIcon />
+              <span className="font-medium">Contact Us</span>
+            </Link>
+
+            {/* Admin link */}
             {isAdmin && (
               <Link
                 href="/admin"
@@ -120,14 +252,8 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
             )}
           </nav>
 
-          {/* Right: Search & Profile */}
+          {/* Right: Profile */}
           <div className="flex items-center space-x-3">
-            {/* Search */}
-            <button className="hidden sm:flex items-center space-x-2 px-3 py-2 hover:bg-white rounded-lg transition-colors">
-              <Search className="w-5 h-5 text-gray-600" />
-            </button>
-
-            {/* Profile Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
@@ -141,7 +267,6 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
                 </span>
               </button>
 
-              {/* Profile Dropdown Menu */}
               {profileMenuOpen && (
                 <>
                   <div
@@ -162,13 +287,6 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
                         </span>
                       )}
                     </div>
-                    {/*<button
-                      className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setProfileMenuOpen(false)}
-                    >
-                      <Settings className="w-4 h-4" />
-                      <span>Settings</span>
-                    </button>*/}
                     {isAdmin && (
                       <Link
                         href="/admin"
@@ -209,29 +327,89 @@ export default function Navbar({ userEmail, userName, userRole }: NavbarProps) {
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-gray-300 bg-[#D9D9D9]">
-          <nav className="px-4 py-4 space-y-2">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
+          <nav className="px-4 py-4 space-y-1">
+            {/* Calendar */}
+            <Link
+              href="/calendar"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                pathname === "/calendar"
+                  ? "bg-white text-[#D7143F]"
+                  : "text-gray-700 hover:bg-white/50"
+              }`}
+            >
+              <Calendar className="w-5 h-5" />
+              <span className="font-medium">Calendar</span>
+            </Link>
+
+            {/* Expandable items */}
+            {DROPDOWN_NAV.map((item) => {
+              const isExpanded = mobileExpanded === item.name;
+              const isActive = pathname.startsWith(item.href);
               const IconComponent = item.icon;
 
               return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive
-                      ? "bg-white text-[#D7143F]"
-                      : "text-gray-700 hover:bg-white/50"
-                  }`}
-                >
-                  <IconComponent className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
-                </Link>
+                <div key={item.name}>
+                  <button
+                    onClick={() =>
+                      setMobileExpanded(isExpanded ? null : item.name)
+                    }
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-white text-[#D7143F]"
+                        : "text-gray-700 hover:bg-white/50"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <IconComponent className="w-5 h-5" />
+                      <span className="font-medium">{item.name}</span>
+                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {isExpanded && (
+                    <div className="ml-4 mt-1 space-y-1 border-l-2 border-gray-300 pl-4">
+                      {item.children.map((child) => {
+                        const ChildIcon = child.icon;
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                              pathname === child.href
+                                ? "bg-white text-[#D7143F] font-medium"
+                                : "text-gray-600 hover:bg-white/50"
+                            }`}
+                          >
+                            <ChildIcon className="w-4 h-4" />
+                            <span>{child.name}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
 
-            {/* Admin link — mobile, only visible to admins */}
+            {/* Contact Us */}
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                pathname === "/contact"
+                  ? "bg-white text-[#D7143F]"
+                  : "text-gray-700 hover:bg-white/50"
+              }`}
+            >
+              <ContactIcon />
+              <span className="font-medium">Contact Us</span>
+            </Link>
+
+            {/* Admin */}
             {isAdmin && (
               <Link
                 href="/admin"
