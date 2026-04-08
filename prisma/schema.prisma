@@ -140,37 +140,6 @@ model StudySpot {
   @@map("study_spots")
 }
 
-// Wellbeing Resources
-model WellbeingResource {
-  id          String   @id @default(cuid())
-  title       String
-  description String   @db.Text
-  category    String   // "mental_health", "physical_health", "counseling", "workshops"
-  resourceType String  // "article", "video", "service", "event"
-  link        String?
-  contactInfo String?
-  imageUrl    String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("wellbeing_resources")
-}
-
-// Wellbeing Logs (for students to track their wellbeing)
-model WellbeingLog {
-  id        String   @id @default(cuid())
-  userId    String
-  moodScore Int      // 1-5 scale
-  notes     String?  @db.Text
-  date      DateTime @default(now())
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("wellbeing_logs")
-}
-
 // Events (for dashboard upcoming events section)
 model Event {
   id          String   @id @default(cuid())
