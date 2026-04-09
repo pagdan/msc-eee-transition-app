@@ -60,7 +60,7 @@ export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
-  const swiperRef = useRef<SwiperType>();
+  const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
     setIsVisible(true);
