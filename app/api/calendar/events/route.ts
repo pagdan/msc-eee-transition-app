@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 async function requireUser() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return null;
+  if (!(session as any)?.user?.id) return null;
   return session;
 }
 
