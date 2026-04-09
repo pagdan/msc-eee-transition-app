@@ -26,7 +26,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   calendarEvents CalendarEvent[]
-  wellbeingLogs WellbeingLog[]
 
   @@map("users")
 }
