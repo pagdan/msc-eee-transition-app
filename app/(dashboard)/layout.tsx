@@ -34,7 +34,7 @@ export default function DashboardLayout({
       <Navbar
         userEmail={session?.user?.email}
         userName={session?.user?.name}
-        userRole={session?.user?.role}
+        userRole={(session?.user as any)?.role}
       />
 
       {/* Main Content */}
