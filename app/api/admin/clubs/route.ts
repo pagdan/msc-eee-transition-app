@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
-  if (!session || (session.user as any).role !== "admin") return null;
+  if (!session || (session as any).user?.role !== "admin") return null;
   return session;
 }
 
