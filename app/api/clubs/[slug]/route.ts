@@ -4,19 +4,16 @@ import { prisma } from "@/lib/prisma";
 // GET /api/clubs/[slug] - Fetch single club by slug
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     const club = await prisma.club.findUnique({
-      where: {
-        slug: params.slug,
-      },
+      where: { slug },
     });
-
     if (!club) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
-
     return NextResponse.json(club);
   } catch (error) {
     console.error("Error fetching club:", error);
@@ -30,15 +27,13 @@ export async function GET(
 // PUT /api/clubs/[slug] - Update club (Admin only)
 export async function PUT(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     const body = await request.json();
-
     const club = await prisma.club.update({
-      where: {
-        slug: params.slug,
-      },
+      where: { slug },
       data: {
         name: body.name,
         description: body.description,
@@ -50,7 +45,6 @@ export async function PUT(
         isActive: body.isActive,
       },
     });
-
     return NextResponse.json(club);
   } catch (error) {
     console.error("Error updating club:", error);
@@ -64,15 +58,13 @@ export async function PUT(
 // DELETE /api/clubs/[slug] - Delete club (Admin only)
 export async function DELETE(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     await prisma.club.delete({
-      where: {
-        slug: params.slug,
-      },
+      where: { slug },
     });
-
     return NextResponse.json({ message: "Club deleted successfully" });
   } catch (error) {
     console.error("Error deleting club:", error);

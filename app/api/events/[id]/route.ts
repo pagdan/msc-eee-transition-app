@@ -3,22 +3,19 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const { id } = await params;
     const event = await prisma.event.findUnique({
-      where: {
-        id: params.id,
-      },
+      where: { id },
     });
-
     if (!event) {
       return NextResponse.json(
         { success: false, error: "Event not found" },
         { status: 404 },
       );
     }
-
     return NextResponse.json({
       success: true,
       data: event,
