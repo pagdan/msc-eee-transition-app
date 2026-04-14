@@ -11,13 +11,11 @@
 - [Overview](#overview)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
-- [Project Status](#project-status)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
 - [Database Schema](#database-schema)
 - [Azure AD Integration](#azure-ad-integration)
-- [Future Development](#future-development)
-- [Academic Context](#academic-context)
+- [Context](#context)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -144,28 +142,6 @@ The transition into a master's programme presents significant challenges for inc
 
 - **Vercel** — Frontend and API hosting
 - **Supabase** — PostgreSQL database hosting
-
----
-
-## Project Status
-
-**Overall Completion: approximately 90%**
-
-| Module                   | Status           | Completion |
-| ------------------------ | ---------------- | ---------- |
-| Authentication and Roles | Complete         | 100%       |
-| Landing Page             | Complete         | 100%       |
-| Dashboard                | Complete         | 100%       |
-| Events System            | Complete         | 100%       |
-| Contact Form             | Complete         | 100%       |
-| Calendar Module          | Complete         | 100%       |
-| Community Module         | Complete         | 100%       |
-| Student Life Module      | Complete         | 100%       |
-| Emotional Well-being     | Complete         | 100%       |
-| Physical Well-being      | Complete         | 100%       |
-| Admin Dashboard          | Complete         | 100%       |
-| Calendar Outlook Sync    | Pending Azure AD | Deferred   |
-| Deployment               | In Progress      | 0%         |
 
 ---
 
@@ -383,44 +359,14 @@ Estimated migration time upon credential receipt is one to two days.
 
 ---
 
-## Scoping Decisions
-
-The following features were considered and deliberately excluded from the project scope:
-
-| Feature                | Reason for Exclusion                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------- |
-| Forum System           | NTU student communities are already active on Reddit, Telegram, and WhatsApp; duplication adds no value |
-| Social Well-being page | Covered by the existing Community module (clubs and social media hub)                                   |
-| Bus route tracker      | The NTU Omnibus app provides real-time tracking; a static replication offers no improvement             |
-| Settings page          | No meaningful user-configurable settings exist within the current feature set                           |
-| Mood tracker           | Adds development complexity with limited practical utility for a short-tenure MSc programme             |
-
-These decisions reflect a deliberate prioritisation of features with clear, immediate value for incoming MSc EEE students over completeness of the original specification.
-
----
-
-## Future Development
-
-The following enhancements are recommended for a production deployment of this platform:
-
-- Azure AD SSO and Outlook calendar synchronisation upon IT approval
-- File upload support for event images and club profile pictures via cloud storage
-- Email notification system for contact form replies and event reminders
-- Progressive Web App support for mobile home screen installation
-- User acceptance testing with a cohort of incoming MSc EEE students
-- Analytics dashboard for administrators to track engagement across modules
-
----
-
-## Academic Context
+## Context
 
 This project is submitted as a Final Year Project for:
 
-- **Programme:** Information Engineering and Media, Year 4
+- **Programme:** Information Engineering and Media, Y4S2, 2026
 - **Institution:** Nanyang Technological University
-- **Project Type:** Individual academic coursework
 
-**Academic Integrity Note:** This project adheres to NTU's academic integrity policies. All development is original work by the project developer.
+**Academic Integrity Note:** This project adheres to NTU's academic integrity policies.
 
 ---
 
@@ -433,5 +379,3 @@ This project is developed as academic coursework for Nanyang Technological Unive
 ## Acknowledgments
 
 - **Supervisor:** Prof Michelle Shao Xu Guang — Project guidance and feedback
-- **NTU School of EEE** — Problem domain support and resource access
-- **NTU IT Services** — Technical infrastructure and institutional guidance
